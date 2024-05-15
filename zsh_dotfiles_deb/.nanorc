@@ -1,0 +1,41 @@
+# Custom nano config
+
+# UPDATED MAY 12, 2024
+
+# Constantly display the cursor position in the status bar.  
+# Note thatthis overrides "quickblank".
+set constantshow
+
+# Display line numbers to the left (and any anchors in the margin).
+#set linenumbers
+
+# Configure Spaces for Tab
+set tabsize 4
+
+# Convert typed tabs to spaces
+set tabstospaces
+
+# Use auto-indentation
+set autoindent
+
+# Specify the color combination to use for the title bar
+set titlecolor yellow,black
+
+# Specify the color combination to use for the shortcut key combos in
+# the two help lines at the bottom of the screen
+set keycolor yellow
+
+# Specify the color combination to use for the function descriptions in
+# the two help lines at the bottom of the screen
+set functioncolor cyan
+
+# Specify the color combination to use for line numbers
+set numbercolor yellow
+
+# Specify the color combination to use for selected text
+set selectedcolor magenta
+
+# Specify the color combination to use for the status bar
+set statuscolor white
+
+include /usr/share/nano/*.nanorc

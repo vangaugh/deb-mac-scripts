@@ -1,0 +1,53 @@
+#!/usr/bin/env sh
+
+# CUSTOM ALIASES FOR DEBIAN SERVER
+# UPDATED MAY 12, 2024
+
+# EASIER NAVIGATION: .., ..., ...., ....., ~ and -
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias c="clear"
+alias sss="source ~/.zshrc"
+alias web="/var/www/"
+
+# ENABLE ALIASES TO BE SUDO'D
+alias sudo='sudo '
+
+# CUSTOM SCRIPTS MAINTANENCE
+alias kk="bash ~/scripts/server_update.sh"
+alias jj="bash ~/scripts/empty_trash.sh"
+alias git-pull-all="bash ~/scripts/git-pull-all.sh"
+
+# SHORTCUTS
+alias dl="cd ~/Downloads"
+alias dt="cd ~/Desktop"
+alias p="cd ~/projects"
+alias repo="~/projects/github_repos"
+
+# TERMINAL ALIASES FOR BEAUTIFICATION
+alias ls="colorls --color=always -h --sd  --group-directories-first"
+
+# ECHO PATH
+alias path='echo -e ${PATH//:/\\n}'
+
+# CUSTOM SERVER SCRIPTS
+alias serverrs="bash ~/scripts/lemp_restart.sh"
+alias nginxrs="/etc/init.d/nginx restart"
+alias phprs="/etc/init.d/php8.2-fpm restart"
+alias mysqlrs="/etc/init.d/mariadb restart"
+
+# IP ADDRESS SHORTCUT
+alias getip="curl http://ipecho.net/plain; echo"
+
+# UPDATE NPM
+alias npmup="npm update -g && npm install npm@latest -g"
+
+# PYTHON VIRTUAL ENVIRONMENT
+#alias python3='python@3.12'
+alias ve='python3 -m venv venv && source venv/bin/activate'
+alias reqinstall='python3 -m pip install -r requirements.txt'
+
+# COPY PUB KEY TO CLIPBOARD
+alias pubkey="more ~/.ssh/id_vg-macmini.pub | pbcopy | echo '=> Public key copied to pasteboard.'"
