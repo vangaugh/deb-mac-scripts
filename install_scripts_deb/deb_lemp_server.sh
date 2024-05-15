@@ -56,19 +56,19 @@ wget -O /etc/nginx/conf.d/blacklist.conf https://raw.githubusercontent.com/mariu
 wget -O /etc/nginx/conf.d/blockips.conf https://raw.githubusercontent.com/mariusv/nginx-badbot-blocker/master/blockips.conf
 
 # Create fastcgi.conf
-wget -q O - https://gist.githubusercontent.com/vangaugh/68c4eb7bd21d195c3fac0c3bfdee55e8/raw/3f61ed57ac36df22a3f5bd2a0c3684edb8d0beb7/fastcgi.conf >/etc/nginx/fastcgi.conf
+wget -q O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/lemp_stack_deb/fastcgi.conf >/etc/nginx/fastcgi.conf
 
 # Create php_fastcgi.conf
-wget -q -O -  https://gist.githubusercontent.com/vangaugh/68c4eb7bd21d195c3fac0c3bfdee55e8/raw/02c6bf168a372e5ced4a993030934f7acf49a466/php_fastcgi.conf > /etc/nginx/snippets/php_fastcgi.conf
+wget -q -O -  https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/lemp_stack_deb/php_fastcgi.conf > /etc/nginx/snippets/php_fastcgi.conf
 
 # Create ssl.conf
-wget -q -O - https://gist.githubusercontent.com/vangaugh/68c4eb7bd21d195c3fac0c3bfdee55e8/raw/02c6bf168a372e5ced4a993030934f7acf49a466/ssl.conf > /etc/nginx/snippets/ssl.conf
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/lemp_stack_deb/ssl.conf > /etc/nginx/snippets/ssl.conf
 
 # Create nginx.conf
-wget -q -O - https://gist.githubusercontent.com/vangaugh/68c4eb7bd21d195c3fac0c3bfdee55e8/raw/02c6bf168a372e5ced4a993030934f7acf49a466/nginx.conf > /etc/nginx/nginx.conf
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/lemp_stack_deb/nginx.conf > /etc/nginx/nginx.conf
 
 # Custom default.conf
-wget -q -O - https://gist.githubusercontent.com/vangaugh/68c4eb7bd21d195c3fac0c3bfdee55e8/raw/15b5a2989eea10d5611c9d9b3715f5a7e8add62b/default.conf > /etc/nginx/sites-available/default.conf
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/lemp_stack_deb/default.conf > /etc/nginx/sites-available/default.conf
 
 # DHPARAM Generation
  openssl dhparam -out /etc/nginx/dhparam.pem 4096
@@ -195,16 +195,15 @@ sed -i "s/^;opcache.fast_shutdown=0/opcache.fast_shutdown=1/" /etc/php/8.2/fpm/p
 # Set period in seconds in which PHP-FPM should restart if OPcache is not accessible
 sed -i "s/^;opcache.force_restart_timeout=180/opcache.force_restart_timeout=30/" /etc/php/8.2/fpm/php.ini
 
-wget -q -O - https://gist.githubusercontent.com/vangaugh/10ef5fe18095f958d97f7fae641a4fc5/raw/7442ed39d930c88245595411f0a1ef4ad1894032/cron_log_rotation.sh > ~/scripts/cron_scripts/cron_log_rotation.sh
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/cron_maintenance/cron_log_rotation.sh > ~/scripts/cron_scripts/cron_log_rotation.sh
 
-wget -q -O - https://gist.githubusercontent.com/vangaugh/10ef5fe18095f958d97f7fae641a4fc5/raw/7442ed39d930c88245595411f0a1ef4ad1894032/cron_mysql_optimize.sh > ~/scripts/cron_scripts/cron_mysql_optimize.sh
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/cron_maintenance/cron_mysql_optimize.sh > ~/scripts/cron_scripts/cron_mysql_optimize.sh
 
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/lemp_restart.sh > ~/scripts/lemp_restart.sh
 
-wget -q -O - https://gist.githubusercontent.com/vangaugh/34740e580d9027fd3273e23b96974975/raw/2512dc59a5782d87c0ab604eeb4670a5899f3a67/lemp_restart.sh > ~/scripts/lemp_restart.sh
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/server_update.sh > ~/scripts/server_update.sh
 
-wget -q -O - https://gist.githubusercontent.com/vangaugh/34740e580d9027fd3273e23b96974975/raw/2512dc59a5782d87c0ab604eeb4670a5899f3a67/server_update.sh > ~/scripts/server_update.sh
-
-wget -q -O - https://gist.githubusercontent.com/vangaugh/34740e580d9027fd3273e23b96974975/raw/2512dc59a5782d87c0ab604eeb4670a5899f3a67/empty_trash.sh > ~/scripts/empty_trash.sh
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/empty_trash.sh > ~/scripts/empty_trash.sh
 
 chmod +x ~/scripts/*.sh
 chmod +x ~/scripts/cron_scripts/*.sh
