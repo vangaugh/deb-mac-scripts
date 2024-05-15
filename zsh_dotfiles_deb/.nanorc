@@ -1,7 +1,5 @@
 # Custom nano config
 
-# UPDATED MAY 12, 2024
-
 # Constantly display the cursor position in the status bar.  
 # Note thatthis overrides "quickblank".
 set constantshow

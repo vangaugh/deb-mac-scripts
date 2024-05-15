@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
 # CUSTOM ALIASES FOR DEBIAN SERVER
-# UPDATED MAY 12, 2024
 
 # EASIER NAVIGATION: .., ..., ...., ....., ~ and -
 alias ..="cd .."
