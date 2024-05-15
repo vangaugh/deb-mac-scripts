@@ -6,9 +6,9 @@
 DEBIAN_FRONTEND=noninteractive
 
 # Logging
-exec   > >(tee -ia post_install.log)
-exec  2> >(tee -ia bpost_install.log >& 2)
-exec 19> post_install.log
+exec   > >(tee -ia lemp-post.log)
+exec  2> >(tee -ia lemp-post.log >& 2)
+exec 19> lemp-post.log
 
 export BASH_XTRACEFD="19"
 set -x
