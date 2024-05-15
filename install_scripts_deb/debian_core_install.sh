@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# GIST
-# https://gist.githubusercontent.com/vangaugh/822012cd248511bf3ecdfce6b8142642/raw/103d67b428773a2cbbc43b9924b8e6ba692f1dc8/debian_core_install.sh
-
 # UPDATED MAY 24, 2024
 
 # Disable user prompt
