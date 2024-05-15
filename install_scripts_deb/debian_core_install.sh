@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-# UPDATED MAY 24, 2024
+# UPDATED MAY 15, 2024
 
 # Disable user prompt
 DEBIAN_FRONTEND=noninteractive
 
-exec   > >(tee -ia bash.log)
-exec  2> >(tee -ia bash.log >& 2)
-exec 19> bash.log
+exec   > >(tee -ia core_install.log)
+exec  2> >(tee -ia core_install.log >& 2)
+exec 19> core_install.log
 
 export BASH_XTRACEFD="19"
 set -x
@@ -86,22 +86,22 @@ git clone https://github.com/RobertDeRose/virtualenv-autodetect.git "${ZSH_CUSTO
 mv ~/.zshrc ~/.zshrc.BAK
 
 # .deb_zshrc
-wget -q -O - https://gist.githubusercontent.com/vangaugh/a46117b3a969ae84840f19785e6dbc9a/raw/54b7b1c4eee7c4c7af5f5ec41ab90cbd42491fc5/.zshrc > ~/.zshrc
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.zshrc > ~/.zshrc
 
 # .deb_custom_aliases
-wget -q -O - https://gist.githubusercontent.com/vangaugh/a46117b3a969ae84840f19785e6dbc9a/raw/54b7b1c4eee7c4c7af5f5ec41ab90cbd42491fc5/.custom_aliases > ~/.custom_aliases
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.custom_aliases > ~/.custom_aliases
 
 # .deb_nanorc
-wget -q -O - https://gist.githubusercontent.com/vangaugh/a46117b3a969ae84840f19785e6dbc9a/raw/54b7b1c4eee7c4c7af5f5ec41ab90cbd42491fc5/.nanorc > ~/.nanorc
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.nanorc > ~/.nanorc
 
 # empty_trash.sh
-wget -q -O - https://gist.githubusercontent.com/vangaugh/34740e580d9027fd3273e23b96974975/raw/8d2cf6d65fc31b983b104f11cad0e4ef159db59b/empty_trash.sh > ~/scripts/empty_trash.sh
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/empty_trash.sh > ~/scripts/empty_trash.sh
 
 # server_update.sh
-wget -q -O - https://gist.githubusercontent.com/vangaugh/34740e580d9027fd3273e23b96974975/raw/8d2cf6d65fc31b983b104f11cad0e4ef159db59b/server_update.sh > ~/scripts/server_update.sh
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/server_update.sh> ~/scripts/server_update.sh
 
 # git_pull_all.sh
-wget -q -O - https://gist.githubusercontent.com/vangaugh/34740e580d9027fd3273e23b96974975/raw/8d2cf6d65fc31b983b104f11cad0e4ef159db59b/git_pull_all.sh > ~/scripts/git_pull_all.sh
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/git_pull_all.sh > ~/scripts/git_pull_all.sh
 
 chmod +x ~/scripts/*.sh
 cd $HOME
@@ -109,13 +109,6 @@ cd $HOME
 # Install colorls
 apt install ruby ruby-dev -y -q
 gem install colorls
-
-# Configure the default ZSH configuration for new users.
-cp ~/.zshrc /etc/skel/
-cp ~/.p10k.zsh /etc/skel/
-cp -r ~/.oh-my-zsh /etc/skel/
-chmod -R 755 /etc/skel/
-chown -R root:root /etc/skel/
 
 echo ""
 echo "Everything installed. Reboot the machine!"
