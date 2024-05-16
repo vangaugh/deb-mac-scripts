@@ -25,11 +25,6 @@ apt install zip unzip git curl wget zsh net-tools fail2ban htop sqlite3 nload ml
 # Download Custom Scripts from Github
 mkdir -p ~/scripts/cron_scripts
 
-# Install Nginx && PHP-FPM stack
-apt install php8.2-memcached php8.2-curl php8.2-fpm php8.2-gd php8.2-mbstring php8.2-mcrypt php8.2-opcache php8.2-xml php8.2-sqlite3 php8.2-mysql php-imagick php-mysql php-json php-gd php-zip php-imap php-mbstring php-curl php-exif php-ldap -y -q
-
-phpenmod imap mbstring
-
 # Create a folder to backup current installation of Nginx && PHP-FPM
 now=$(date +"%Y-%m-%d_%H-%M-%S")
 
@@ -46,9 +41,6 @@ systemctl unmask nginx.service
 # Install Brottli package for Nginx
 # https://blog.cloudflare.com/results-experimenting-brotli/
 apt install libnginx-mod-http-brotli-filter -y -q
-
-# Disable external access to PHP-FPM scripts
-sed -i "s/^;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php/8.2/fpm/php.ini
 
 # Create an additional configuration folder for Nginx
 mkdir -p /etc/nginx/conf.d
@@ -80,6 +72,11 @@ unlink /etc/nginx/sites-enabled/default
 rm -rf /etc/nginx/sites-available/default
 rm -rf /etc/nginx/sites-enabled/default
 ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled
+
+# Install Nginx && PHP-FPM stack
+apt install php8.2-memcached php8.2-curl php8.2-fpm php8.2-gd php8.2-mbstring php8.2-mcrypt php8.2-opcache php8.2-xml php8.2-sqlite3 php8.2-mysql php-imagick php-mysql php-json php-gd php-zip php-imap php-mbstring php-curl php-exif php-ldap -y -q
+
+phpenmod imap mbstring
 
 # Use md5 hash of your hostname to define a root password for MariDB
 password=$(hostname | md5sum | awk '{print $1}')
@@ -122,6 +119,9 @@ echo -e "<?php phpinfo(); ?>" > /var/www/html/info.php
 # Maximize the limits of file system usage
 echo -e "*       soft    nofile  1000000" >>/etc/security/limits.conf
 echo -e "*       hard    nofile  1000000" >>/etc/security/limits.conf
+
+# Disable external access to PHP-FPM scripts
+sed -i "s/^;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php/8.2/fpm/php.ini
 
 # Switch to the ondemand state of PHP-FPM
 sed -i "s/^pm = .*/pm = ondemand/" /etc/php/8.2/fpm/pool.d/www.conf
