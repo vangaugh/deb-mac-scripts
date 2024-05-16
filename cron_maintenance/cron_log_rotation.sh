@@ -14,6 +14,3 @@ df -h >> $log_file
 
 # Remove old log files
 find $log_path -type f -name "*.log*" -mtime +2 -delete >> $log_file
-
-# Send an email to the sysadmin with the log file attached
-# sendmail < $log_file <<email address>>

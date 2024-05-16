@@ -3,7 +3,7 @@
 # UPDATED MAY 24, 2024
 
 ### Variables ###
-BACKUP_FOLDER="/root/backups/crm"
+BACKUP_FOLDER="~/vgcrm_backups"
 BACKUP_TARGET="/Root/Backups"
 #### Functions ####
 
