@@ -106,6 +106,7 @@ cd $HOME
 apt install ruby ruby-dev -y -q
 gem install colorls
 
+echo "---------------------------------------------------------------------------------"
 echo ""
 echo "Everything installed. Reboot the machine!"
 echo ""
