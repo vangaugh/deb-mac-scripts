@@ -40,11 +40,11 @@ dpkg-reconfigure openssh-server
 update-rc.d -f ssh enable 2 3 4 5
 
 # Add non root users (sudo permissions)
-useradd -m vangaugh
-passwd vangaugh
+# useradd -m vangaugh
+# passwd vangaugh
 
 # Add user to sudo group
-usermod -a -G sudo vangaugh
+# usermod -a -G sudo vangaugh
 
 # Install Python and Pip
 apt install python3 python3-full python3-venv -y -q
