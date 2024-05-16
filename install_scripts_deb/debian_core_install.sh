@@ -13,10 +13,7 @@ export BASH_XTRACEFD="19"
 set -x
 
 # Make Directories
-mkdir -p ~/Projects/
-mkdir -p ~/dotfiles
 mkdir -p ~/scripts
-mkdir -p ~/backups
 
 # Update list of available packages
 apt autoclean && apt update -y -q
