@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # UPDATED MAY 24, 2024 - Installs LEMP STACK (NGINX/PHP8.2-FPM/MARIADB)
 
