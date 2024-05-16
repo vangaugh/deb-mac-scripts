@@ -25,10 +25,10 @@ alias dt="cd ~/Desktop"
 alias p="cd ~/Projects"
 
 # TERMINAL ALIASES FOR BEAUTIFICATION
- alias ls='LC_ALL=C colorls --color=always -h --sd'
+ alias ls="LC_ALL=C colorls --color=always -h --sd"
 
 # ECHO PATH
-alias path='echo -e ${PATH//:/\\n}'
+alias path="echo -e ${PATH//:/\\n}"
 
 # CUSTOM SERVER SCRIPTS
 alias serverrs="bash ~/scripts/lemp_restart.sh"
@@ -43,9 +43,9 @@ alias getip="curl http://ipecho.net/plain; echo"
 alias npmup="npm update -g && npm install npm@latest -g"
 
 # PYTHON VIRTUAL ENVIRONMENT
-#alias python3='python@3.12'
-alias ve='python3 -m venv venv && source venv/bin/activate'
-alias reqinstall='python3 -m pip install -r requirements.txt'
+#alias python3="python@3.12"
+alias ve="python3 -m venv venv && source venv/bin/activate"
+alias reqinstall="python3 -m pip install -r requirements.txt"
 
 # COPY PUB KEY TO CLIPBOARD
-alias pubkey="more ~/.ssh/id_vg-macmini.pub | pbcopy | echo '=> Public key copied to pasteboard.'"
+alias pubkey="more ~/.ssh/changeto_key.pub | pbcopy | echo '=> Public key copied to pasteboard.'"

@@ -19,6 +19,9 @@ apt update -y -q
 # Update installed packages
 apt full-upgrade -y && apt autoremove -y
 
+# Install the most common packages that will be usefull under development environment
+apt install zip unzip git curl wget zsh net-tools fail2ban htop sqlite3 nload mlocate nano apt-utils software-properties-common build-essential -y -q
+
 # Download Custom Scripts from Github
 mkdir -p ~/scripts/cron_scripts
 
@@ -55,9 +58,6 @@ mkdir -p /etc/nginx/conf.d
 wget -O /etc/nginx/conf.d/blacklist.conf https://raw.githubusercontent.com/mariusv/nginx-badbot-blocker/master/blacklist.conf
 wget -O /etc/nginx/conf.d/blockips.conf https://raw.githubusercontent.com/mariusv/nginx-badbot-blocker/master/blockips.conf
 
-# Create fastcgi.conf
-wget -q O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/lemp_stack_deb/fastcgi.conf >/etc/nginx/fastcgi.conf
-
 # Create php_fastcgi.conf
 wget -q -O -  https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/lemp_stack_deb/php_fastcgi.conf > /etc/nginx/snippets/php_fastcgi.conf
 
@@ -71,7 +71,8 @@ wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/lem
 wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/lemp_stack_deb/default.conf > /etc/nginx/sites-available/default.conf
 
 # DHPARAM Generation
- openssl dhparam -out /etc/nginx/dhparam.pem 4096
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+openssl dhparam -out /etc/nginx/dhparam.pem 4096
 
 # Unlnk default and Symlink localhost.conf
 
@@ -124,13 +125,6 @@ echo -e "*       hard    nofile  1000000" >>/etc/security/limits.conf
 
 # Switch to the ondemand state of PHP-FPM
 sed -i "s/^pm = .*/pm = ondemand/" /etc/php/8.2/fpm/pool.d/www.conf
-
-# Use such number of children that will not hurt other parts of the system
-# Let's assume that system itself needs 128 MB of RAM
-# Let's assume that we let have MariaDB another 256 MB to run
-# And finally let's assume that Nginx will need something like 8 MB to run
-# On the 1 GB system that leads up to 632 MB of free memory
-# If we give one PHP-FPM child a moderate amount of RAM for example 32 MB that will let us create 19 PHP-FPM proccesses at max
 
 # Check median of how much PHP-FPM child consumes with the following command
 ps --no-headers -o "rss,cmd" -C php-fpm8.2 | awk '{ sum+=$1 } END { printf ("%d%s\n", sum/NR/1024,"M") }'
@@ -224,10 +218,11 @@ systemctl restart mariadb
 /etc/init.d/mariadb reload
 
 apt clean && apt update && apt full-upgrade -y && apt autoremove -y
-
+echo "---------------------------------------------------------------------------------"
 echo ""
 echo "LEMP Server installed. Reboot the machine!"
 echo "mariadb root password = $password"
 echo "Password location = /etc/mysql/my.cnf"
 echo ""
 echo "You should run mysql_secure_install"
+echo "---------------------------------------------------------------------------------"

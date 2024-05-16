@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# MAY 12, 2024 - UPDATE ALL GITHUB REPOS
+# UPDATE ALL GITHUB REPOS
 
 # store the current dir
 cd /opt

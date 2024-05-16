@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# UPDATED MAY 15, 2024
+# DEBIAN CORE INSTALL
 
 # Disable user prompt
 DEBIAN_FRONTEND=noninteractive
@@ -13,11 +13,10 @@ export BASH_XTRACEFD="19"
 set -x
 
 # Make Directories
-mkdir -p ~/projects/github_repos
+mkdir -p ~/Projects/
 mkdir -p ~/dotfiles
 mkdir -p ~/scripts
 mkdir -p ~/backups
-touch ~/.functions
 
 # Update list of available packages
 apt autoclean && apt update -y -q
@@ -26,7 +25,7 @@ apt autoclean && apt update -y -q
 apt full-upgrade -y && apt autoremove -y
 
 # Install the most common packages that will be usefull under development environment
-apt install zip unzip git curl wget zsh net-tools fail2ban htop sqlite3 nload mlocate nano software-properties-common build-essential -y -q
+apt install zip unzip git curl wget zsh net-tools fail2ban htop sqlite3 nload mlocate nano apt-utils software-properties-common build-essential -y -q
 
 # Fix SSH keys. First, install OpenSSH server:
 apt install openssh-server -y -q
