@@ -63,7 +63,7 @@ wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/lem
 wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/lemp_stack_deb/default.conf > /etc/nginx/sites-available/default.conf
 
 # DHPARAM Generation
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
 openssl dhparam -out /etc/nginx/dhparam.pem 4096
 
 # Unlnk default and Symlink localhost.conf
