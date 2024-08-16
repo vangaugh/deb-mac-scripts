@@ -30,8 +30,8 @@ update-rc.d -f ssh remove
 update-rc.d -f ssh defaults
 
 #Move the old SSH keys somewhere else:
-# mkdir -p /etc/ssh/insecure_original_default_keys
-# mv /etc/ssh/ssh_host_* /etc/ssh/insecure_original_default_keys/
+mkdir -p /etc/ssh/insecure_original_default_keys
+mv /etc/ssh/ssh_host_* /etc/ssh/insecure_original_default_keys/
 
 #And finally, make new SSH keys for this machine.
 dpkg-reconfigure openssh-server
