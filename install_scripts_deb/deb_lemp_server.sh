@@ -76,6 +76,13 @@ ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled
 # Install Nginx && PHP-FPM stack
 apt install php8.2-memcached php8.2-curl php8.2-fpm php8.2-gd php8.2-mbstring php8.2-mcrypt php8.2-opcache php8.2-xml php8.2-sqlite3 php8.2-mysql php-imagick php-mysql php-json php-gd php-zip php-imap php-mbstring php-curl php-exif php-ldap -y -q
 
+
+# php php-cli php-common php-gd php-curl php-mysqlnd php-zip php-fileinfo php-gmagick php-opcache php-process php-xml php-mbstring php-gmagick
+# graphicsmagick libgraphicsmagick-dev 
+
+# Optional Recommended
+# ffmpeg ghostscript mediainfo poppler perl-Image-ExifTool
+
 phpenmod imap mbstring
 
 # Use md5 hash of your hostname to define a root password for MariDB
