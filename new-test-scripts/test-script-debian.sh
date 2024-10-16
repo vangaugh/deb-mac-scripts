@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 ## UPDATED SERVER INSTALL SCRIPT - CORE - DEBIAN 12 AND HIGHER
 ## BY VanGaugh and ro0t3d
@@ -96,7 +96,7 @@ print_installation_message_success() {
   go_temp
 }
 
-## MAIN 
+## MAIN
 
 # Fix SSH keys. First, install OpenSSH server:
 install_ssh() {
@@ -288,3 +288,7 @@ if [[ $answer =~ ^[Yy]$ ]]; then
   reboot
 fi
 printf ${ENDCOLOR}
+
+cat <<EOL
+
+EOL
