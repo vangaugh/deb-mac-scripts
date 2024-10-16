@@ -21,8 +21,11 @@ apt autoclean && apt update -y -q
 # Update installed packages
 apt full-upgrade -y && apt autoremove -y
 
-# Install the most common packages that will be usefull under development environment
-apt install zip unzip git curl wget zsh net-tools fail2ban htop sqlite3 nload mlocate nano apt-utils software-properties-common build-essential -y -q
+# Install compiling basics
+apt install software-properties-common build-essential module-assistant dkms -y -q
+
+# Install the most common packages that will be usefull for server
+apt install zip unzip git curl wget zsh net-tools fail2ban sqlite3 nload mlocate nano apt-utils -y -q
 
 # Fix SSH keys. First, install OpenSSH server:
 apt install openssh-server -y -q
