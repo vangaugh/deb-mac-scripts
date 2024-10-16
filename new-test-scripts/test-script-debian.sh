@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 ## UPDATED SERVER INSTALL SCRIPT - CORE - DEBIAN 12 AND HIGHER
 ## BY VanGaugh and ro0t3d
