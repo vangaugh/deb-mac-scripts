@@ -186,13 +186,10 @@ install_docker() {
 install_oh-my-zsh() {
   print_installation_message oh-my-zsh
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-
-  # ZSH Default Shell
+  cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
   chsh -s $(which zsh)
-
   ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
   export ZSH_CUSTOM
-
   print_installation_message_success oh-my-zsh
 }
 
@@ -211,7 +208,7 @@ install_dotfiles() {
   print_installation_message dotfiles
   # Make directories
   mkdir -p ~/scripts
-
+  mv ~/.zshrc ~/.zshrc.BAK
   # .deb_zshrc
   wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.zshrc >~/.zshrc
 
@@ -232,6 +229,7 @@ install_dotfiles() {
 
   #Make scripts executible
   chmod +x ~/scripts/*.sh
+  cd $HOME
   print_installation_message_success dotfiles
 }
 
