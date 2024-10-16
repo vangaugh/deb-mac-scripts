@@ -67,7 +67,7 @@ essentials=(
 
 printf "\n${BLUE}========================Installing standard package $1========================${ENDCOLOR}\n"
 for key in "${essentials[@]}"; do
-  apt install -y $key
+  echo $key | xargs apt-get install -y
 done
 printf "\n${BLUE}===============Standard packages are installed successfully=============== ${ENDCOLOR}\n"
 
