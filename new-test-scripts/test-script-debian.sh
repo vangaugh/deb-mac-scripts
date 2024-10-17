@@ -82,7 +82,8 @@ clean-up() {
   sudo apt -f install &&
     sudo apt -y autoremove &&
     sudo apt -y autoclean &&
-    sudo apt -y clean
+    sudo apt -y clean &&
+    rm -rf .zshrc.pre-oh-my-zsh .zshrc.BAK .bash_history .bash_logout .bashrc
 }
 
 # Installation Message
@@ -187,7 +188,7 @@ install_ohmyzsh() {
   print_installation_message ohmyzsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
-chsh -s $(which zsh)
+chsh -s $(which zsh) ro0t3d
 ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
 export ZSH_CUSTOM
   print_installation_message_success ohmyzsh
@@ -227,14 +228,12 @@ cd $HOME
  print_installation_message_success powerlevel10k
 }
 
-
 # Install colorls
 install_colorls() {
   print_installation_message colorls
   apt install ruby ruby-dev -y -q
   gem install colorls
   print_installation_message_success colorls
-
 }
 
 # Install FiraCodeNF
