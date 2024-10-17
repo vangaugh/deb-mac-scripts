@@ -27,7 +27,7 @@ echo ""
 echo "---------------------------------------------------------------------------------"
 echo -e "     ${blue}Performing updates:${clear}"
 echo "---------------------------------------------------------------------------------"
-apt clean && apt update && apt full-upgrade -y && apt autoremove -y
+sudo apt clean && sudo apt update && sudo apt full-upgrade -y && sudo apt autoremove -y
 echo ""
 echo "---------------------------------------------------------------------------------"
 echo -e " ${blue}Device Version Info Follows:${clear}"
