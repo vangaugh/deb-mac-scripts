@@ -183,55 +183,50 @@ install_docker() {
 }
 
 # Install Oh-My-Zsh
-install_oh-my-zsh() {
-  print_installation_message oh-my-zsh
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-  cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
-  chsh -s $(which zsh)
-  ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
-  export ZSH_CUSTOM
-  print_installation_message_success oh-my-zsh
+install_ohmyzsh() {
+  print_installation_message ohmyzsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+chsh -s $(which zsh)
+ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
+export ZSH_CUSTOM
+  print_installation_message_success ohmyzsh
 }
 
-# Powerlevel10k Theme Install
+# Powerlevel10k Theme
 install_powerlevel10k() {
   print_installation_message powerlevel10k
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM}"/themes/powerlevel10k
-  git clone https://github.com/zsh-users/zsh-autosuggestions.git "${ZSH_CUSTOM}"/plugins/zsh-autosuggestions
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM}"/plugins/zsh-syntax-highlighting
-  git clone https://github.com/RobertDeRose/virtualenv-autodetect.git "${ZSH_CUSTOM}"/plugins/virtualenv-autodetect
-  print_installation_message_success powerlevel10k
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM}"/themes/powerlevel10k
+git clone https://github.com/zsh-users/zsh-autosuggestions.git "${ZSH_CUSTOM}"/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM}"/plugins/zsh-syntax-highlighting
+git clone https://github.com/RobertDeRose/virtualenv-autodetect.git "${ZSH_CUSTOM}"/plugins/virtualenv-autodetect
+
+# backup .zshrc file
+mv ~/.zshrc ~/.zshrc.BAK
+
+# .deb_zshrc
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.zshrc > ~/.zshrc
+
+# .deb_custom_aliases
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.custom_aliases > ~/.custom_aliases
+
+# .deb_nanorc
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.nanorc > ~/.nanorc
+
+# empty_trash.sh
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/empty_trash.sh > ~/scripts/empty_trash.sh
+
+# server_update.sh
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/server_update.sh> ~/scripts/server_update.sh
+
+# git_pull_all.sh
+wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/git_pull_all.sh > ~/scripts/git_pull_all.sh
+
+chmod +x ~/scripts/*.sh
+cd $HOME
+ print_installation_message_success powerlevel10k
 }
 
-# Download Scripts
-install_dotfiles() {
-  print_installation_message dotfiles
-  # Make directories
-  mkdir -p ~/scripts
-  mv ~/.zshrc ~/.zshrc.BAK
-  # .deb_zshrc
-  wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.zshrc >~/.zshrc
-
-  # .deb_custom_aliases
-  wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.custom_aliases >~/.custom_aliases
-
-  # .deb_nanorc
-  wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.nanorc >~/.nanorc
-
-  # empty_trash.sh
-  wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/empty_trash.sh >~/scripts/empty_trash.sh
-
-  # server_update.sh
-  wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/server_update.sh >~/scripts/server_update.sh
-
-  # git_pull_all.sh
-  wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/git_pull_all.sh >~/scripts/git_pull_all.sh
-
-  #Make scripts executible
-  chmod +x ~/scripts/*.sh
-  cd $HOME
-  print_installation_message_success dotfiles
-}
 
 # Install colorls
 install_colorls() {
