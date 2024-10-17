@@ -63,6 +63,7 @@ essentials=(
   unzip
   net-tools
   apt-utils
+
 )
 
 printf "\n${BLUE}========================Installing standard package $1========================${ENDCOLOR}\n"
@@ -185,58 +186,58 @@ install_docker() {
 
 # Install Portainer
 install_portainer() {
- print_installation_message Portainer
-docker volume create portainer_data
-docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:2.21.3
-echo "Please goto https://10.211.55.26:9443 to access Portainer"
+  print_installation_message Portainer
+  docker volume create portainer_data
+  docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:2.21.3
+  echo "Please goto https://10.211.55.26:9443 to access Portainer"
 
-print_installation_message_success Portainer
+  print_installation_message_success Portainer
 
 }
 
 # Install Oh-My-Zsh
 install_ohmyzsh() {
   print_installation_message ohmyzsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
-chsh -s $(which zsh) ro0t3d
-ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
-export ZSH_CUSTOM
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+  chsh -s $(which zsh) ro0t3d
+  ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
+  export ZSH_CUSTOM
   print_installation_message_success ohmyzsh
 }
 
 # Powerlevel10k Theme
 install_powerlevel10k() {
   print_installation_message powerlevel10k
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM}"/themes/powerlevel10k
-git clone https://github.com/zsh-users/zsh-autosuggestions.git "${ZSH_CUSTOM}"/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM}"/plugins/zsh-syntax-highlighting
-git clone https://github.com/RobertDeRose/virtualenv-autodetect.git "${ZSH_CUSTOM}"/plugins/virtualenv-autodetect
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM}"/themes/powerlevel10k
+  git clone https://github.com/zsh-users/zsh-autosuggestions.git "${ZSH_CUSTOM}"/plugins/zsh-autosuggestions
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM}"/plugins/zsh-syntax-highlighting
+  git clone https://github.com/RobertDeRose/virtualenv-autodetect.git "${ZSH_CUSTOM}"/plugins/virtualenv-autodetect
 
-# backup .zshrc file
-mv ~/.zshrc ~/.zshrc.BAK
+  # backup .zshrc file
+  mv ~/.zshrc ~/.zshrc.BAK
 
-# .deb_zshrc
-wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.zshrc > ~/.zshrc
+  # .deb_zshrc
+  wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.zshrc >~/.zshrc
 
-# .deb_custom_aliases
-wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.custom_aliases > ~/.custom_aliases
+  # .deb_custom_aliases
+  wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.custom_aliases >~/.custom_aliases
 
-# .deb_nanorc
-wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.nanorc > ~/.nanorc
+  # .deb_nanorc
+  wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.nanorc >~/.nanorc
 
-# empty_trash.sh
-wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/empty_trash.sh > ~/scripts/empty_trash.sh
+  # empty_trash.sh
+  wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/empty_trash.sh >~/scripts/empty_trash.sh
 
-# server_update.sh
-wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/server_update.sh> ~/scripts/server_update.sh
+  # server_update.sh
+  wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/server_update.sh >~/scripts/server_update.sh
 
-# git_pull_all.sh
-wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/git_pull_all.sh > ~/scripts/git_pull_all.sh
+  # git_pull_all.sh
+  wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/git_pull_all.sh >~/scripts/git_pull_all.sh
 
-chmod +x ~/scripts/*.sh
-cd $HOME
- print_installation_message_success powerlevel10k
+  chmod +x ~/scripts/*.sh
+  cd $HOME
+  print_installation_message_success powerlevel10k
 }
 
 # Install colorls
