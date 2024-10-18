@@ -98,7 +98,7 @@ print_installation_message_success() {
   go_temp
 }
 
-## MAIN
+## Main script and installation candidates
 
 # Fix SSH keys. First, install OpenSSH server:
 install_ssh() {
@@ -182,6 +182,7 @@ install_docker() {
   ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
   docker-compose --version
   print_installation_message_success docker-compose
+  
 }
 
 # Install Portainer
@@ -237,6 +238,7 @@ install_powerlevel10k() {
   wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/git_pull_all.sh >~/scripts/git_pull_all.sh
 
   chmod +x ~/scripts/*.sh
+  chown -R $USER:$USER .;
   cd $HOME
   print_installation_message_success powerlevel10k
 }
@@ -262,7 +264,6 @@ install_FiraCodeNF() {
   fc-cache -f
   go_temp
   print_installation_message_success FiraCodeNF
-
 }
 
 # Automatically execute all functions starting with "install_"
