@@ -236,10 +236,11 @@ install_powerlevel10k() {
 
   # git_pull_all.sh
   wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/git_pull_all.sh >~/scripts/git_pull_all.sh
-
-  chmod +x ~/scripts/*.sh
-  chown -R $USER:$USER .;
+  
   cd $HOME
+  chmod +x ~/scripts/*.sh
+  sudo chown -R $USER:$USER .;
+  
   print_installation_message_success powerlevel10k
 }
 
