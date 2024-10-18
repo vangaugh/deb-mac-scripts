@@ -128,34 +128,34 @@ install_git() {
 }
 
 # OpenJDK
-#install_openJDK() {
-#  print_installation_message OpenJDK
-#  apt -y install default-jdk
-#  print_installation_message OpenJDK
+install_openJDK() {
+  print_installation_message OpenJDK
+  apt -y install default-jdk
+  print_installation_message OpenJDK
 
-#}
+}
 
 # ORACLE JAVA JDK 18 &  ORACLE JAVA JDK 21 & ORACLE JAVA JDK 17 && SPRING BOOT CLI
-#install_javaJDK() {
-#  print_installation_message JAVA-JDK-18
-#  wget https://download.oracle.com/java/18/latest/jdk-18.0.2_linux-x64_bin.tar.gz
-#  mkdir /usr/local/java/
-#  tar xf jdk-18.0.2_linux-x64_bin.tar.gz -C /usr/local/java/
-#  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-18.0.2/bin/java" 1
-#  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-18.0.2/bin/javac" 1
-#  update-alternatives --set java /usr/local/java/jdk-18.0.2/bin/java
-#  update-alternatives --set javac /usr/local/java/jdk-18.0.2/bin/javac
-#  echo -e '\n# JAVA Configuration' >>$HOME/.profile
-#  echo 'JAVA_HOME=/usr/local/java/jdk-18.0.2/bin/java' >>$HOME/.profile
-#  source $HOME/.profile
-#  print_installation_message_success JAVA-JDK-18
-# print_installation_message JAVA-JDK-21
-#  wget https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz
-#  tar xf jdk-21_linux-x64_bin.tar.gz -C /usr/local/java/
-#  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-21/bin/java" 2
-#  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-21/bin/javac" 2
-#  print_installation_message_success JAVA-JDK-21
-#}
+install_javaJDK() {
+  print_installation_message JAVA-JDK-18
+  wget https://download.oracle.com/java/18/latest/jdk-18.0.2_linux-x64_bin.tar.gz
+  mkdir /usr/local/java/
+  tar xf jdk-18.0.2_linux-x64_bin.tar.gz -C /usr/local/java/
+  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-18.0.2/bin/java" 1
+  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-18.0.2/bin/javac" 1
+  update-alternatives --set java /usr/local/java/jdk-18.0.2/bin/java
+  update-alternatives --set javac /usr/local/java/jdk-18.0.2/bin/javac
+  echo -e '\n# JAVA Configuration' >>$HOME/.profile
+  echo 'JAVA_HOME=/usr/local/java/jdk-18.0.2/bin/java' >>$HOME/.profile
+  source $HOME/.profile
+  print_installation_message_success JAVA-JDK-18
+  print_installation_message JAVA-JDK-21
+  wget https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz
+  tar xf jdk-21_linux-x64_bin.tar.gz -C /usr/local/java/
+  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-21/bin/java" 2
+  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-21/bin/javac" 2
+  print_installation_message_success JAVA-JDK-21
+}
 
 install_docker() {
   print_installation_message Docker
@@ -182,7 +182,7 @@ install_docker() {
   ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
   docker-compose --version
   print_installation_message_success docker-compose
-  
+
 }
 
 # Install Portainer
@@ -236,12 +236,31 @@ install_powerlevel10k() {
 
   # git_pull_all.sh
   wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/git_pull_all.sh >~/scripts/git_pull_all.sh
-  
+
   cd $HOME
   chmod +x ~/scripts/*.sh
-  chown -R $USER:$USER .;
-  
+  chown -R $USER:$USER .
+
   print_installation_message_success powerlevel10k
+}
+
+# Install Python and Pip
+install_python3() {
+  apt install python3 python3-full python3-venv -y -q
+  apt install python3-dev python3-pip -y -q
+
+  # Upgrade pip
+  python3 -m pip install --upgrade pip
+
+  # Direnv
+  # https://www.willandskill.se/sv/articles/install-direnv-on-ubuntu-18-04-in-1-min
+  # https://github.com/RobertDeRose/virtualenv-autodetect
+
+  # Create virtual environment
+  # python3 -m venv venv && echo layout virtualenv $PWD  > .envrc
+
+  print_installation_message_success python3
+
 }
 
 # Install colorls
