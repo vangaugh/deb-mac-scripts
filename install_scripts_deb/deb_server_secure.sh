@@ -181,14 +181,14 @@ echo ""
 
 # Step 20: Remote access and SSH basic settings
 echo -e "\e[33mStep 20: Remote access and SSH basic settings\e[0m"
-#echo "Disabling root login over SSH..."
-# sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-#echo "Disabling password authentication over SSH..."
-# sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+echo "Disabling root login over SSH..."
+sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+echo "Disabling password authentication over SSH..."
+sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
 echo "Disabling X11 forwarding over SSH..."
- sed -i 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config
+sed -i 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config
 echo "Reloading the SSH service..."
- systemctl reload sshd
+systemctl reload sshd
 echo ""
 
 # Step 21: Disable Xwindow
