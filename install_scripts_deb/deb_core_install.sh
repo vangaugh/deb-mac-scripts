@@ -120,43 +120,14 @@ install_ssh() {
 
 }
 
-# GIT
+# Install GIT
 install_git() {
   print_installation_message GIT
   apt -y install git
   print_installation_message_success GIT
 }
 
-# OpenJDK
-install_openJDK() {
-  print_installation_message OpenJDK
-  apt -y install default-jdk
-  print_installation_message OpenJDK
-
-}
-
-# ORACLE JAVA JDK 18 &  ORACLE JAVA JDK 21 & ORACLE JAVA JDK 17 && SPRING BOOT CLI
-install_javaJDK() {
-  print_installation_message JAVA-JDK-18
-  wget https://download.oracle.com/java/18/latest/jdk-18.0.2_linux-x64_bin.tar.gz
-  mkdir /usr/local/java/
-  tar xf jdk-18.0.2_linux-x64_bin.tar.gz -C /usr/local/java/
-  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-18.0.2/bin/java" 1
-  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-18.0.2/bin/javac" 1
-  update-alternatives --set java /usr/local/java/jdk-18.0.2/bin/java
-  update-alternatives --set javac /usr/local/java/jdk-18.0.2/bin/javac
-  echo -e '\n# JAVA Configuration' >>$HOME/.profile
-  echo 'JAVA_HOME=/usr/local/java/jdk-18.0.2/bin/java' >>$HOME/.profile
-  source $HOME/.profile
-  print_installation_message_success JAVA-JDK-18
-  print_installation_message JAVA-JDK-21
-  wget https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz
-  tar xf jdk-21_linux-x64_bin.tar.gz -C /usr/local/java/
-  update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk-21/bin/java" 2
-  update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk-21/bin/javac" 2
-  print_installation_message_success JAVA-JDK-21
-}
-
+# Install Docker
 install_docker() {
   print_installation_message Docker
   apt-get install \
@@ -207,7 +178,7 @@ install_ohmyzsh() {
   print_installation_message_success ohmyzsh
 }
 
-# Powerlevel10k Theme
+# Install Powerlevel10k Theme
 install_powerlevel10k() {
   print_installation_message powerlevel10k
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM}"/themes/powerlevel10k
@@ -271,7 +242,7 @@ install_colorls() {
   print_installation_message_success colorls
 }
 
-# Install FiraCodeNF
+# Install FiraCodeNF Fonts
 install_FiraCodeNF() {
   print_installation_message FiraCodeNF
   rm -rf /usr/local/share/fonts/FiraCodeNF
