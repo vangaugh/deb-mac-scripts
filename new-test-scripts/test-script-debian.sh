@@ -215,6 +215,7 @@ install_powerlevel10k() {
   git clone https://github.com/RobertDeRose/virtualenv-autodetect.git "${ZSH_CUSTOM}"/plugins/virtualenv-autodetect
 
   # backup .zshrc file
+  mkdir -p $HOME/scripts
   mv ~/.zshrc ~/.zshrc.BAK
 
   # .deb_zshrc
