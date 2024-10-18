@@ -7,7 +7,7 @@ Copy & Paste one of these scripts on a Debian Server.
 1. Debian Core Installation
 
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/install_scripts_deb/debian_core_install.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/install_scripts_deb/deb_core_install.sh)"
 
 ```
 
