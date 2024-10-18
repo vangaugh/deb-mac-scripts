@@ -239,7 +239,7 @@ install_powerlevel10k() {
   
   cd $HOME
   chmod +x ~/scripts/*.sh
-  sudo chown -R $USER:$USER .;
+  chown -R $USER:$USER .;
   
   print_installation_message_success powerlevel10k
 }
