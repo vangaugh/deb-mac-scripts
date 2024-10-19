@@ -34,6 +34,17 @@ HOME=/home/$USER
 # Go TEMP folder
 cd /tmp
 
+# Installation Message
+print_installation_message() {
+  printf "\n${BLUE}===============================Installing $1==============================${ENDCOLOR}\n"
+}
+
+# Installation Success Message
+print_installation_message_success() {
+  printf "${GREEN}========================$1 is installed successfully!========================${ENDCOLOR}\n"
+  go_temp
+}
+
 # Update
 printf "\n${BLUE}========================Installing Updating========================${ENDCOLOR}\n"
 apt-get -y update
@@ -79,35 +90,6 @@ printf "\n${BLUE}===============Standard packages are installed successfully====
 go_temp() {
   cd /tmp
 }
-
-# CLEANUP
-clean-up() {
-  print_installation_message clean-up
-  apt -f install &&
-    apt -y autoremove &&
-    apt -y autoclean &&
-    apt -y clean
-  print_installation_message_success clean-up
-}
-
-# REMOVE BASH ITEMS FROM USER DIRECTORY AS SHELL IS ZSH
-remove-bs() {
-  print_installation_message remove-bs
-  sudo rm -rf .zshrc.pre-oh-my-zsh .zshrc.BAK .bash_history .bash_logout .bashrc *.bash*
-  print_installation_message_success remove-bs
-}
-
-# Installation Message
-print_installation_message() {
-  printf "\n${BLUE}===============================Installing $1==============================${ENDCOLOR}\n"
-}
-
-# Installation Success Message
-print_installation_message_success() {
-  printf "${GREEN}========================$1 is installed successfully!========================${ENDCOLOR}\n"
-  go_temp
-}
-
 ## Main script and installation candidates
 
 # Fix SSH keys. First, install OpenSSH server:
@@ -272,17 +254,27 @@ install_FiraCodeNF() {
 # Automatically execute all functions starting with "install_"
 for func in $(declare -F | awk '{print $3}' | grep "^install_"); do
   $func
-  clean-up
-  remove-bs
 done
 
 printf "\n${GREEN}"
+
 cat <<EOL
 ===========================================================================
 Congratulations, everything you wanted to install is installed!
 ===========================================================================
 EOL
 printf "${ENDCOLOR}\n"
+
+cat <<EOL
+
+EOL
+
+printf ${YELLOW}
+read -p "Would you like to perform cleanup and delete BS files? (y/n): " -n 1 answer
+if [[ $answer =~ ^[Yy]$ ]]; then
+  rm -rf .bash* .*.BAK .sudo_as_admin_successful
+fi
+printf ${ENDCOLOR}
 
 cat <<EOL
 
