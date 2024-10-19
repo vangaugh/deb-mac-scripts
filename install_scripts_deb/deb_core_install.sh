@@ -206,6 +206,9 @@ install_powerlevel10k() {
   # .deb_custom_aliases
   wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.custom_aliases >~/.custom_aliases
 
+  # .p10k Powerlevel10 terminal config
+  wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.p10k.zsh >~/.p10k.zsh
+
   # .deb_nanorc
   wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.nanorc >~/.nanorc
 
