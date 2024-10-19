@@ -80,19 +80,21 @@ go_temp() {
   cd /tmp
 }
 
-# Cleanup
+# CLEANUP
 clean-up() {
   print_installation_message clean-up
   apt -f install &&
     apt -y autoremove &&
     apt -y autoclean &&
-    apt -y clean &&
+    apt -y clean
+    print_installation_message_success clean-up
 }
 
 # REMOVE BASH ITEMS FROM USER DIRECTORY AS SHELL IS ZSH
 remove-bs() {
   print_installation_message remove-bs
   rm -rf .zshrc.pre-oh-my-zsh .zshrc.BAK .bash_history .bash_logout .bashrc *.bash*
+  print_installation_message_success remove-bs
 }
 
 # Installation Message
@@ -218,7 +220,7 @@ install_powerlevel10k() {
 
   cd $HOME
   chmod +x ~/scripts/*.sh
-  chown -R $USER:$USER .;
+  chown -R $USER:$USER .
 
   print_installation_message_success powerlevel10k
 }
