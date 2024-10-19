@@ -4,6 +4,9 @@
 ## BY VanGaugh and ro0t3d
 ## Oct 16, 2024
 
+# Disable user prompt
+DEBIAN_FRONTEND=noninteractive
+
 # Set Color
 RED="\e[31m"
 GREEN="\e[32m"
