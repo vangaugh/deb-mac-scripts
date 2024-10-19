@@ -269,17 +269,6 @@ cat <<EOL
 
 EOL
 
-printf ${YELLOW}
-read -p "Would you like to perform cleanup and delete BS files? (y/n): " -n 1 answer
-if [[ $answer =~ ^[Yy]$ ]]; then
-  rm -rf .bash* .*.BAK .sudo_as_admin_successful
-fi
-printf ${ENDCOLOR}
-
-cat <<EOL
-
-EOL
-
 printf ${RED}
 read -p "Are you going to reboot this machine for stability? (y/n): " -n 1 answer
 if [[ $answer =~ ^[Yy]$ ]]; then
