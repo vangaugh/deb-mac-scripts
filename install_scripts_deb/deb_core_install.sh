@@ -80,11 +80,16 @@ go_temp() {
 # Cleanup
 clean-up() {
   print_installation_message clean-up
-  sudo apt -f install &&
-    sudo apt -y autoremove &&
-    sudo apt -y autoclean &&
-    sudo apt -y clean &&
-    rm -rf .zshrc.pre-oh-my-zsh .zshrc.BAK .bash_history .bash_logout .bashrc
+  apt -f install &&
+    apt -y autoremove &&
+    apt -y autoclean &&
+    apt -y clean &&
+}
+
+# REMOVE BASH ITEMS FROM USER DIRECTORY AS SHELL IS ZSH
+remove-bs() {
+  print_installation_message remove-bs
+  rm -rf .zshrc.pre-oh-my-zsh .zshrc.BAK .bash_history .bash_logout .bashrc *.bash*
 }
 
 # Installation Message
@@ -221,7 +226,7 @@ install_python3() {
   apt install python3-dev python3-pip -y -q
 
   # Upgrade pip
-  python3 -m pip install --upgrade pip
+  # python3 -m pip install --upgrade pip
 
   # Direnv
   # https://www.willandskill.se/sv/articles/install-direnv-on-ubuntu-18-04-in-1-min
@@ -231,7 +236,6 @@ install_python3() {
   # python3 -m venv venv && echo layout virtualenv $PWD  > .envrc
 
   print_installation_message_success python3
-
 }
 
 # Install colorls
@@ -262,10 +266,11 @@ for func in $(declare -F | awk '{print $3}' | grep "^install_"); do
   $func
 done
 
-printf "\n${BLUE}===============Installing Dependencies========================${ENDCOLOR}\n"
+printf "\n${BLUE}===============CLEANING UP / REMOVING BASH LEFTOVERS / INSTALLING DEPENDANCIES=======================${ENDCOLOR}\n"
 # Install dependencies & Cleanup
 clean-up
-printf "${GREEN}===============Dependencies are installed successfully!===============${ENDCOLOR}\n"
+remove-bs
+printf "${GREEN}===============YOUR SYSTEM HAS BEEN UPDATED AND CLEANED!===============${ENDCOLOR}\n"
 
 printf "\n${GREEN}"
 cat <<EOL
