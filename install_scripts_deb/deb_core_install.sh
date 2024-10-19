@@ -87,13 +87,13 @@ clean-up() {
     apt -y autoremove &&
     apt -y autoclean &&
     apt -y clean
-    print_installation_message_success clean-up
+  print_installation_message_success clean-up
 }
 
 # REMOVE BASH ITEMS FROM USER DIRECTORY AS SHELL IS ZSH
 remove-bs() {
   print_installation_message remove-bs
-  rm -rf .zshrc.pre-oh-my-zsh .zshrc.BAK .bash_history .bash_logout .bashrc *.bash*
+  sudo rm -rf .zshrc.pre-oh-my-zsh .zshrc.BAK .bash_history .bash_logout .bashrc *.bash*
   print_installation_message_success remove-bs
 }
 
@@ -272,15 +272,9 @@ install_FiraCodeNF() {
 # Automatically execute all functions starting with "install_"
 for func in $(declare -F | awk '{print $3}' | grep "^install_"); do
   $func
+  clean-up
+  remove-bs
 done
-
-printf "\n${BLUE}===============CLEANING UP / REMOVING BASH LEFTOVERS / INSTALLING DEPENDANCIES=======================${ENDCOLOR}\n"
-
-# Install dependencies & Cleanup
-clean-up
-remove-bs
-
-printf "${GREEN}===============YOUR SYSTEM HAS BEEN UPDATED AND CLEANED!===============${ENDCOLOR}\n"
 
 printf "\n${GREEN}"
 cat <<EOL
