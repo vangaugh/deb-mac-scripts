@@ -267,9 +267,11 @@ for func in $(declare -F | awk '{print $3}' | grep "^install_"); do
 done
 
 printf "\n${BLUE}===============CLEANING UP / REMOVING BASH LEFTOVERS / INSTALLING DEPENDANCIES=======================${ENDCOLOR}\n"
+
 # Install dependencies & Cleanup
 clean-up
 remove-bs
+
 printf "${GREEN}===============YOUR SYSTEM HAS BEEN UPDATED AND CLEANED!===============${ENDCOLOR}\n"
 
 printf "\n${GREEN}"
