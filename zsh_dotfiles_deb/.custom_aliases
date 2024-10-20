@@ -24,7 +24,7 @@ alias dl="cd ~/Downloads"
 # TERMINAL ALIASES FOR BEAUTIFICATION
 alias ls="LC_ALL=C colorls --color=always -h --sd"
 
-# ECHO PATH
+# DISPLAY PATH
 alias path="echo -e ${PATH//:/\\n}"
 
 # CUSTOM SERVER SCRIPTS
