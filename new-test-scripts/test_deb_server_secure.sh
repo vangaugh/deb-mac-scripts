@@ -12,6 +12,14 @@
 # DISABLE USER PROMPT (UNATTENDED INSTALL)
 DEBIAN_FRONTEND=noninteractive
 
+# Logging
+exec > >(tee -ia core-install-post.log)
+exec 2> >(tee -ia core-install-post.log >&2)
+exec 19>core-install-post.log
+
+export BASH_XTRACEFD="19"
+set -x
+
 # SET COLOR VARIABLES
 RED="\e[31m"
 GREEN="\e[32m"
@@ -21,6 +29,17 @@ ENDCOLOR="\e[0m"
 # INPUT SCRIPT VAIABLES
 USER=$(logname)
 HOME=/home/$USER
+
+# Installation Message
+print_installation_message() {
+    printf "\n${BLUE}===============================Installing $1==============================${ENDCOLOR}\n"
+}
+
+# Installation Success Message
+print_installation_message_success() {
+    printf "${GREEN}========================$1 is installed successfully!========================${ENDCOLOR}\n"
+    go_temp
+}
 
 # ENSURES USER HAS ROOT PRIVILEDGES
 if [ "$(id -u)" != 0 ]; then
@@ -34,7 +53,6 @@ EOL
     exit 1
 fi
 
-
 # Go TEMP folder
 cd /tmp
 
@@ -47,17 +65,6 @@ printf "${GREEN}========================Updated successfully!===================
 printf "\n${BLUE}===========================Upgrading===========================${ENDCOLOR}\n"
 apt-get -y upgrade && apt-get -y full-upgrade && apt-get autoremove -y
 printf "${GREEN}==========================Upgraded successfully!===========================${ENDCOLOR}\n"
-
-# Installation Message
-print_installation_message() {
-    printf "\n${BLUE}===============================Installing $1==============================${ENDCOLOR}\n"
-}
-
-# Installation Success Message
-print_installation_message_success() {
-    printf "${GREEN}========================$1 is installed successfully!========================${ENDCOLOR}\n"
-    go_temp
-}
 
 # Step 1: Document the host information
 install_sysinfo() {
