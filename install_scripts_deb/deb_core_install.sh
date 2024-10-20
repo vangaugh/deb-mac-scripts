@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 
+#########################################
 ## UPDATED SERVER INSTALL SCRIPT - CORE - DEBIAN 12 AND HIGHER
 ## BY VanGaugh and ro0t3d
 ## Oct 16, 2024
+#########################################
+
+#########################################
+# SET SCRIPT VARIABLES AND OTHER ACTIONS
+#########################################
 
 # Disable user prompt
 DEBIAN_FRONTEND=noninteractive
@@ -21,26 +27,9 @@ GREEN="\e[32m"
 BLUE="\e[34m"
 ENDCOLOR="\e[0m"
 
-# For root control
-if [ "$(id -u)" != 0 ]; then
-  printf "${RED}"
-  cat <<EOL
-========================================================================
-You are not root! This script must be run as root!
-========================================================================
-EOL
-  printf "${ENDCOLOR}"
-  exit 1
-fi
-
-# Get USER name
+# INPUT SCRIPT VAIABLES
 USER=$(logname)
-
-# Get HOME folder path
 HOME=/home/$USER
-
-# Go TEMP folder
-cd /tmp
 
 # Installation Message
 print_installation_message() {
@@ -53,6 +42,21 @@ print_installation_message_success() {
   go_temp
 }
 
+# For root control
+if [ "$(id -u)" != 0 ]; then
+  printf "${RED}"
+  cat <<EOL
+========================================================================
+You are not root! This script must be run as root!
+========================================================================
+EOL
+  printf "${ENDCOLOR}"
+  exit 1
+fi
+
+# Go TEMP folder
+cd /tmp
+
 # Update
 printf "\n${BLUE}========================Installing Updating========================${ENDCOLOR}\n"
 apt-get -y update
@@ -62,6 +66,21 @@ printf "${GREEN}========================Updated successfully!===================
 printf "\n${BLUE}===========================Upgrading===========================${ENDCOLOR}\n"
 apt-get -y upgrade && apt-get -y full-upgrade && apt-get autoremove -y
 printf "${GREEN}==========================Upgraded successfully!===========================${ENDCOLOR}\n"
+
+# Step 1: Document the host information
+install_sysinfo() {
+  print_installation_message sysinfo
+  echo -e "\e[33mStep 1: Documenting host information\e[0m"
+  echo "Hostname: $(hostname)"
+  echo "Kernel version: $(uname -r)"
+  echo "Distribution: $(lsb_release -d | cut -f2)"
+  echo "CPU information: $(lscpu | grep 'Model name')"
+  echo "Memory information: $(free -h | awk '/Mem/{print $2}')"
+  echo "Disk information: $(lsblk | grep disk)"
+  echo
+  print_installation_message_success sysinfo
+
+}
 
 # Install standard package
 declare -A essential
@@ -80,6 +99,7 @@ essentials=(
   nano
   net-tools
   software-properties-common
+  systemd-sysv 
   tree
   unzip
   wget
@@ -90,7 +110,7 @@ essentials=(
 
 printf "\n${BLUE}========================Installing standard package $1========================${ENDCOLOR}\n"
 for key in "${essentials[@]}"; do
-  echo $key | xargs apt-get install -y
+  echo $key | xargs apt-get install --no-install-recommends -y -q
 done
 printf "\n${BLUE}===============Standard packages are installed successfully=============== ${ENDCOLOR}\n"
 
@@ -98,6 +118,7 @@ printf "\n${BLUE}===============Standard packages are installed successfully====
 go_temp() {
   cd /tmp
 }
+
 ## Main script and installation candidates
 
 # Fix SSH keys. First, install OpenSSH server:
@@ -116,6 +137,19 @@ install_ssh() {
 
   #Set ssh to start running on all runlevels:
   update-rc.d -f ssh enable 2 3 4 5
+
+  # Harden SSH Server
+  # Step 20: Remote access and SSH basic settings
+  echo -e "\e[33mStep 20: Remote access and SSH basic settings\e[0m"
+  echo "Disabling root login over SSH..."
+  sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+  echo "Disabling password authentication over SSH..."
+  sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+  echo "Disabling X11 forwarding over SSH..."
+  sed -i 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config
+  echo "Reloading the SSH service..."
+  systemctl reload sshd
+  echo ""
   print_installation_message_success SSH
 }
 
