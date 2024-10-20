@@ -4,7 +4,7 @@
 # CUSTOM ALIASES FOR DEBIAN SERVER
 ####################################################
 
-# EASIER NAVIGATION: .., ..., ...., ....., ~ and -
+# EASIER NAVIGATION
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
@@ -16,7 +16,7 @@ alias web="/var/www/"
 # CUSTOM SCRIPTS MAINTANENCE
 alias kk="bash ~/scripts/server_update.sh"
 alias jj="bash ~/scripts/empty_trash.sh"
-alias git-pull-all="bash ~/scripts/git-pull-all.sh"
+alias git-pull-all="bash ~/scripts/git-pull-all.sh"x
 
 # SHORTCUTS
 alias dl="cd ~/Downloads"
@@ -46,20 +46,3 @@ alias reqinstall="python3 -m pip install -r requirements.txt"
 
 # COPY PUB KEY TO CLIPBOARD
 alias pubkey="more ~/.ssh/changeto_key.pub | pbcopy | echo '=> Public key copied to pasteboard.'"
-
-####################################################
-# FUNCTIONS
-####################################################
-
-# Convert apt to nala
-apt() {
-  command nala "$@"
-}
-sudo() {
-  if [ "$1" = "apt" ]; then
-    shift
-    command sudo nala "$@"
-  else
-    command sudo "$@"
-  fi
-}
