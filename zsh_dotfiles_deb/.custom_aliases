@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 
+####################################################
 # CUSTOM ALIASES FOR DEBIAN SERVER
+####################################################
 
 # EASIER NAVIGATION: .., ..., ...., ....., ~ and -
 alias ..="cd .."
@@ -21,7 +23,6 @@ alias git-pull-all="bash ~/scripts/git-pull-all.sh"
 
 # SHORTCUTS
 alias dl="cd ~/Downloads"
-alias p="cd ~/Projects"
 
 # TERMINAL ALIASES FOR BEAUTIFICATION
 alias ls="LC_ALL=C colorls --color=always -h --sd"
@@ -48,3 +49,20 @@ alias reqinstall="python3 -m pip install -r requirements.txt"
 
 # COPY PUB KEY TO CLIPBOARD
 alias pubkey="more ~/.ssh/changeto_key.pub | pbcopy | echo '=> Public key copied to pasteboard.'"
+
+####################################################
+# FUNCTIONS
+####################################################
+
+# Convert apt to nala
+apt() {
+  command nala "$@"
+}
+sudo() {
+  if [ "$1" = "apt" ]; then
+    shift
+    command sudo nala "$@"
+  else
+    command sudo "$@"
+  fi
+}
