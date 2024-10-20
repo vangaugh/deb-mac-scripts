@@ -46,3 +46,4 @@ alias reqinstall="python3 -m pip install -r requirements.txt"
 
 # COPY PUB KEY TO CLIPBOARD
 alias pubkey="more ~/.ssh/changeto_key.pub | pbcopy | echo '=> Public key copied to pasteboard.'"
+
