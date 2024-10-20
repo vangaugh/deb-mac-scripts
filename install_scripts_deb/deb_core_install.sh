@@ -31,17 +31,6 @@ ENDCOLOR="\e[0m"
 USER=$(logname)
 HOME=/home/$USER
 
-# Installation Message
-print_installation_message() {
-  printf "\n${BLUE}===============================Installing $1==============================${ENDCOLOR}\n"
-}
-
-# Installation Success Message
-print_installation_message_success() {
-  printf "${GREEN}========================$1 is installed successfully!========================${ENDCOLOR}\n"
-  go_temp
-}
-
 # For root control
 if [ "$(id -u)" != 0 ]; then
   printf "${RED}"
@@ -59,28 +48,13 @@ cd /tmp
 
 # Update
 printf "\n${BLUE}========================Installing Updating========================${ENDCOLOR}\n"
-apt-get -y update
+nala -y update
 printf "${GREEN}========================Updated successfully!========================${ENDCOLOR}\n"
 
 # Upgrade
 printf "\n${BLUE}===========================Upgrading===========================${ENDCOLOR}\n"
-apt-get -y upgrade && apt-get -y full-upgrade && apt-get autoremove -y
+nala -y upgrade && nala -y upgrade && nala autoremove -y
 printf "${GREEN}==========================Upgraded successfully!===========================${ENDCOLOR}\n"
-
-# Step 1: Document the host information
-install_sysinfo() {
-  print_installation_message sysinfo
-  echo -e "\e[33mStep 1: Documenting host information\e[0m"
-  echo "Hostname: $(hostname)"
-  echo "Kernel version: $(uname -r)"
-  echo "Distribution: $(lsb_release -d | cut -f2)"
-  echo "CPU information: $(lscpu | grep 'Model name')"
-  echo "Memory information: $(free -h | awk '/Mem/{print $2}')"
-  echo "Disk information: $(lsblk | grep disk)"
-  echo
-  print_installation_message_success sysinfo
-
-}
 
 # Install standard package
 declare -A essential
@@ -97,9 +71,10 @@ essentials=(
   lsb-release
   module-assistant
   nano
+  nala
   net-tools
   software-properties-common
-  systemd-sysv 
+  systemd-sysv
   tree
   unzip
   wget
@@ -110,21 +85,49 @@ essentials=(
 
 printf "\n${BLUE}========================Installing standard package $1========================${ENDCOLOR}\n"
 for key in "${essentials[@]}"; do
-  echo $key | xargs apt-get install --no-install-recommends -y -q
+  echo $key | xargs nala install --no-install-recommends -y -q
 done
 printf "\n${BLUE}===============Standard packages are installed successfully=============== ${ENDCOLOR}\n"
+
+#########################################
+# FUNCTIONS FOR EASY SCRIPTING
+#########################################
 
 # Go /tmp
 go_temp() {
   cd /tmp
 }
 
-## Main script and installation candidates
+# Installation Message
+print_installation_message() {
+  printf "\n${BLUE}===============================Installing $1==============================${ENDCOLOR}\n"
+}
+
+# Installation Success Message
+print_installation_message_success() {
+  printf "${GREEN}========================$1 is installed successfully!========================${ENDCOLOR}\n"
+  go_temp
+}
+
+# Document the host information
+install_sysinfo() {
+  print_installation_message sysinfo
+  echo -e "\e[33mStep 1: Documenting host information\e[0m"
+  echo "Hostname: $(hostname)"
+  echo "Kernel version: $(uname -r)"
+  echo "Distribution: $(lsb_release -d | cut -f2)"
+  echo "CPU information: $(lscpu | grep 'Model name')"
+  echo "Memory information: $(free -h | awk '/Mem/{print $2}')"
+  echo "Disk information: $(lsblk | grep disk)"
+  echo
+  print_installation_message_success sysinfo
+
+}
 
 # Fix SSH keys. First, install OpenSSH server:
 install_ssh() {
   print_installation_message SSH
-  apt install openssh-server -y -q
+  nala install openssh-server -y -q
   update-rc.d -f ssh remove
   update-rc.d -f ssh defaults
 
@@ -139,7 +142,7 @@ install_ssh() {
   update-rc.d -f ssh enable 2 3 4 5
 
   # Harden SSH Server
-  # Step 20: Remote access and SSH basic settings
+  # Remote access and SSH basic settings
   echo -e "\e[33mStep 20: Remote access and SSH basic settings\e[0m"
   echo "Disabling root login over SSH..."
   sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
@@ -156,14 +159,14 @@ install_ssh() {
 # Install GIT
 install_git() {
   print_installation_message GIT
-  apt -y install git
+  nala -y install git
   print_installation_message_success GIT
 }
 
 # Install Docker
 install_docker() {
   print_installation_message Docker
-  apt-get install \
+  nala install \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -173,8 +176,8 @@ install_docker() {
   echo \
     "deb [arch=arm64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
       $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list >/dev/null
-  apt-get update
-  apt-get -y install docker-ce docker-ce-cli containerd.io
+  nala update
+  nala -y install docker-ce docker-ce-cli containerd.io
   docker run hello-world
   groupadd docker
   usermod -aG docker $USER
@@ -251,18 +254,8 @@ install_powerlevel10k() {
 
 # Install Python and Pip
 install_python3() {
-  apt install python3 python3-full python3-venv -y -q
-  apt install python3-dev python3-pip -y -q
-
-  # Upgrade pip
-  # python3 -m pip install --upgrade pip
-
-  # Direnv
-  # https://www.willandskill.se/sv/articles/install-direnv-on-ubuntu-18-04-in-1-min
-  # https://github.com/RobertDeRose/virtualenv-autodetect
-
-  # Create virtual environment
-  # python3 -m venv venv && echo layout virtualenv $PWD  > .envrc
+  nala install python3 python3-full python3-venv -y -q
+  nala install python3-dev python3-pip -y -q
 
   print_installation_message_success python3
 }
@@ -270,7 +263,7 @@ install_python3() {
 # Install colorls
 install_colorls() {
   print_installation_message colorls
-  apt install ruby ruby-dev -y -q
+  nala install ruby ruby-dev -y -q
   gem install colorls
   print_installation_message_success colorls
 }
@@ -289,6 +282,10 @@ install_FiraCodeNF() {
   go_temp
   print_installation_message_success FiraCodeNF
 }
+
+#########################################
+# EXECUTE ALL THE CUSTOM FUNCTONS ABOVE
+#########################################
 
 # Automatically execute all functions starting with "install_"
 for func in $(declare -F | awk '{print $3}' | grep "^install_"); do
