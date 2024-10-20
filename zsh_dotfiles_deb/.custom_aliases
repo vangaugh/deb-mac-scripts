@@ -13,9 +13,6 @@ alias c="clear"
 alias sss="source ~/.zshrc"
 alias web="/var/www/"
 
-# ENABLE ALIASES TO BE SUDO'D
-alias sudo='sudo '
-
 # CUSTOM SCRIPTS MAINTANENCE
 alias kk="bash ~/scripts/server_update.sh"
 alias jj="bash ~/scripts/empty_trash.sh"
