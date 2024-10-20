@@ -7,6 +7,14 @@
 # Disable user prompt
 DEBIAN_FRONTEND=noninteractive
 
+# Logging
+exec > >(tee -ia core-install-post.log)
+exec 2> >(tee -ia core-install-post.log >&2)
+exec 19>core-install-post.log
+
+export BASH_XTRACEFD="19"
+set -x
+
 # Set Color
 RED="\e[31m"
 GREEN="\e[32m"
@@ -58,25 +66,25 @@ printf "${GREEN}==========================Upgraded successfully!================
 # Install standard package
 declare -A essential
 essentials=(
-  software-properties-common
-  build-essential
-  module-assistant
-  dkms
   apt-transport-https
+  apt-utils
+  build-essential
   ca-certificates
   curl
-  nano
-  gnupg
-  lsb-release
-  wget
   dialog
-  tree
-  zsh
+  dkms
+  gnupg
   htop
-  zip
-  unzip
+  lsb-release
+  module-assistant
+  nano
   net-tools
-  apt-utils
+  software-properties-common
+  tree
+  unzip
+  wget
+  zip
+  zsh
 
 )
 
@@ -109,7 +117,6 @@ install_ssh() {
   #Set ssh to start running on all runlevels:
   update-rc.d -f ssh enable 2 3 4 5
   print_installation_message_success SSH
-
 }
 
 # Install GIT
@@ -145,7 +152,6 @@ install_docker() {
   ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
   docker-compose --version
   print_installation_message_success docker-compose
-
 }
 
 # Install Portainer
@@ -156,7 +162,6 @@ install_portainer() {
   echo "Please goto https://10.211.55.26:9443 to access Portainer"
 
   print_installation_message_success Portainer
-
 }
 
 # Install Oh-My-Zsh
