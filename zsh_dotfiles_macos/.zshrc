@@ -33,7 +33,6 @@ export LC_ALL="en_US.UTF-8"
 
 # ALIASES
 source ~/.custom_aliases
-source ~/.functions
 
 # SOURCE COLORLS TO SUPPORT TAB COMPLETIONS
 source $(dirname $(gem which colorls))/tab_complete.sh
