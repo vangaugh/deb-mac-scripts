@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# RESTARTS LEMP SERVER (NGINX / MARIADB / PHP-FPM
+# RESTARTS LEMP SERVER (NGINX / MARIADB / PHP-FPM)
 
 # Execute Commands
 sudo /etc/init.d/nginx restart && 

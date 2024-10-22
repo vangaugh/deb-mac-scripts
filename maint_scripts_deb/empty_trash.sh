@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-# SCRIPT STARTS HERE
+# DELETE LOCAL TRASH SECURELY ON DEBIAN BASED SYSTEM
+
+# DELETE LOCAL FILES
 echo "...TAKING OUT THE GARBAGE"
 
 find ~/.local/share/Trash/files ~/.local/share/Trash/info -type f -print0 | xargs -0 -I{} /usr/bin/scrub -Sfp random {}

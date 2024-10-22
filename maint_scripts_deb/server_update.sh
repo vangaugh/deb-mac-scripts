@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# UPDATE & UPGRADE REPOS ON DEBIAN SERVER
+
 # Color variables
 red='\033[0;31m'
 green='\033[0;32m'
@@ -8,7 +10,7 @@ blue='\033[0;34m'
 magenta='\033[0;35m'
 cyan='\033[0;36m'
 
-# Clear the color after that
+# Clear the color variable
 clear='\033[0m'
 
 echo "---------------------------------------------------------------------------------"
@@ -27,7 +29,11 @@ echo ""
 echo "---------------------------------------------------------------------------------"
 echo -e "     ${blue}Performing updates:${clear}"
 echo "---------------------------------------------------------------------------------"
-sudo nala clean && sudo nala update && sudo nala upgrade -y && sudo nala autoremove -y && sudo nala autopurge -y
+sudo nala clean && 
+sudo nala update && 
+sudo nala upgrade -y && 
+sudo nala autoremove -y && 
+sudo nala autopurge -y
 echo ""
 echo "---------------------------------------------------------------------------------"
 echo -e " ${blue}Device Version Info Follows:${clear}"
