@@ -10,10 +10,10 @@
 # SET SCRIPT VARIABLES AND OTHER ACTIONS
 #########################################
 
-# Disable user prompt
+# DISABLE USER PROMPT
 DEBIAN_FRONTEND=noninteractive
 
-# Logging
+# LOGGING
 exec > >(tee -ia core-install-post.log)
 exec 2> >(tee -ia core-install-post.log >&2)
 exec 19>core-install-post.log
@@ -21,7 +21,7 @@ exec 19>core-install-post.log
 export BASH_XTRACEFD="19"
 set -x
 
-# Set Color
+# SET COLOR
 RED="\e[31m"
 GREEN="\e[32m"
 BLUE="\e[34m"
@@ -31,32 +31,27 @@ ENDCOLOR="\e[0m"
 USER=$(logname)
 HOME=/home/$USER
 
-# For root control
-if [ "$(id -u)" != 0 ]; then
-  printf "${RED}"
-  cat <<EOL
-========================================================================
-You are not root! This script must be run as root!
-========================================================================
-EOL
-  printf "${ENDCOLOR}"
-  exit 1
+# RUN SCRIPT AS ROOT
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 
+   exit 1
 fi
 
-# Go TEMP folder
+# GO TO TEMP FOLDER
 cd /tmp
 
-# Update
+# UPDATE
 printf "\n${BLUE}========================Installing Updating========================${ENDCOLOR}\n"
 nala -y update
 printf "${GREEN}========================Updated successfully!========================${ENDCOLOR}\n"
 
-# Upgrade
+# UPDATE
 printf "\n${BLUE}===========================Upgrading===========================${ENDCOLOR}\n"
-nala -y upgrade && nala -y upgrade && nala autoremove -y
+nala -y upgrade && 
+nala autoremove -y
 printf "${GREEN}==========================Upgraded successfully!===========================${ENDCOLOR}\n"
 
-# Install standard package
+# INSTALL STANDARD CORE PACKAGES
 declare -A essential
 essentials=(
   apt-transport-https
@@ -93,23 +88,32 @@ printf "\n${BLUE}===============Standard packages are installed successfully====
 # FUNCTIONS FOR EASY SCRIPTING
 #########################################
 
-# Go /tmp
+# GOTO TEMP FOLDER
 go_temp() {
   cd /tmp
 }
 
-# Installation Message
+# INSTALLATION MESSAGE
 print_installation_message() {
   printf "\n${BLUE}===============================Installing $1==============================${ENDCOLOR}\n"
 }
 
-# Installation Success Message
+# INSTALLATION MESSAGE SUCCESS
 print_installation_message_success() {
   printf "${GREEN}========================$1 is installed successfully!========================${ENDCOLOR}\n"
   go_temp
 }
 
-# Document the host information
+# CLEANUP
+clean-up() {
+  print_installation_message clean-up
+  sudo nala -f install &&
+    sudo nala -y autoremove &&
+    sudo nala -y autopurge &&
+    sudo apt -y clean &&
+    rm -rf .zshrc.pre-oh-my-zsh .zshrc.BAK .bash_history .bash_logout .bashrc
+
+# DOCUMENT THE HOST IMFORMATION
 install_sysinfo() {
   print_installation_message sysinfo
   echo -e "\e[33mStep 1: Documenting host information\e[0m"
@@ -124,30 +128,34 @@ install_sysinfo() {
 
 }
 
-# Fix SSH keys. First, install OpenSSH server:
+# INSTALL OPENSSH SERVER:
 install_ssh() {
   print_installation_message SSH
   nala install openssh-server -y -q
   update-rc.d -f ssh remove
   update-rc.d -f ssh defaults
 
-  #Move the old SSH keys somewhere else:
+  # MOVE OLD SSH KEYS:
   mkdir -p /etc/ssh/insecure_original_default_keys
   mv /etc/ssh/ssh_host_* /etc/ssh/insecure_original_default_keys/
 
-  #And finally, make new SSH keys for this machine.
+  # CREATE NEW SSH KEYS
   dpkg-reconfigure openssh-server
 
-  #Set ssh to start running on all runlevels:
+  # SSH TO RUN AT ALL LEVELS:
   update-rc.d -f ssh enable 2 3 4 5
 
-  # Harden SSH Server
-  # Remote access and SSH basic settings
+  # SETUP AUTHORIZED KEYS FOR SSH ACCESS
+  mkdir -p $HOME/.ssh
+  touch $HOME/.ssh/authorized_keys
+  chown -R $USER:$USER $HOME/.ssh
+
+  # SSH BASIC SETTINGS
   echo -e "\e[33mStep 20: Remote access and SSH basic settings\e[0m"
   echo "Disabling root login over SSH..."
   sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-  echo "Disabling password authentication over SSH..."
-  sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+  #echo "Disabling password authentication over SSH..."
+  #sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
   echo "Disabling X11 forwarding over SSH..."
   sed -i 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config
   echo "Reloading the SSH service..."
@@ -156,14 +164,14 @@ install_ssh() {
   print_installation_message_success SSH
 }
 
-# Install GIT
+# INSTALL git
 install_git() {
   print_installation_message GIT
   nala -y install git
   print_installation_message_success GIT
 }
 
-# Install Docker
+# INSTALL docker
 install_docker() {
   print_installation_message Docker
   nala install \
@@ -191,7 +199,7 @@ install_docker() {
   print_installation_message_success docker-compose
 }
 
-# Install Portainer
+# INSTALL portainer
 install_portainer() {
   print_installation_message Portainer
   docker volume create portainer_data
@@ -201,7 +209,7 @@ install_portainer() {
   print_installation_message_success Portainer
 }
 
-# Install Oh-My-Zsh
+# INSTALL oh-my-zsh
 install_ohmyzsh() {
   print_installation_message ohmyzsh
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
@@ -212,7 +220,7 @@ install_ohmyzsh() {
   print_installation_message_success ohmyzsh
 }
 
-# Install Powerlevel10k Theme
+# INSTALL Powerlevel10k Theme & PULL ZSH CONFIGURATION
 install_powerlevel10k() {
   print_installation_message powerlevel10k
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM}"/themes/powerlevel10k
@@ -220,39 +228,39 @@ install_powerlevel10k() {
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM}"/plugins/zsh-syntax-highlighting
   git clone https://github.com/RobertDeRose/virtualenv-autodetect.git "${ZSH_CUSTOM}"/plugins/virtualenv-autodetect
 
-  # backup .zshrc file
+  # BACKUP .zshrc file
   mkdir -p $HOME/scripts
   mv ~/.zshrc ~/.zshrc.BAK
 
-  # .deb_zshrc
+  # PULL .deb_zshrc
   wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.zshrc >~/.zshrc
 
-  # .deb_custom_aliases
+  # PULL .deb_custom_aliases
   wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.custom_aliases >~/.custom_aliases
 
-  # .p10k Powerlevel10 terminal config
+  # PULL .p10k Powerlevel10 terminal config
   wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.p10k.zsh >~/.p10k.zsh
 
-  # .deb_nanorc
+  # PULL .deb_nanorc
   wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/zsh_dotfiles_deb/.nanorc >~/.nanorc
 
-  # empty_trash.sh
+  # PULL empty_trash.sh
   wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/empty_trash.sh >~/scripts/empty_trash.sh
 
-  # server_update.sh
+  # PULL server_update.sh
   wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/server_update.sh >~/scripts/server_update.sh
 
-  # git_pull_all.sh
+  # PULL git_pull_all.sh
   wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/git_pull_all.sh >~/scripts/git_pull_all.sh
 
   cd $HOME
   chmod +x ~/scripts/*.sh
-  chown -R $USER:$USER .
+  chown -R $USER:$USER .;
 
   print_installation_message_success powerlevel10k
 }
 
-# Install Python and Pip
+# INSTALL Python & Pip
 install_python3() {
   nala install python3 python3-full python3-venv -y -q
   nala install python3-dev python3-pip -y -q
@@ -260,7 +268,7 @@ install_python3() {
   print_installation_message_success python3
 }
 
-# Install colorls
+# INSTALL colorls
 install_colorls() {
   print_installation_message colorls
   nala install ruby ruby-dev -y -q
@@ -268,7 +276,7 @@ install_colorls() {
   print_installation_message_success colorls
 }
 
-# Install FiraCodeNF Fonts
+# INSTALL FiraCodeNF Fonts
 install_FiraCodeNF() {
   print_installation_message FiraCodeNF
   rm -rf /usr/local/share/fonts/FiraCodeNF
@@ -284,7 +292,7 @@ install_FiraCodeNF() {
 }
 
 #########################################
-# EXECUTE ALL THE CUSTOM FUNCTONS ABOVE
+# EXECUTE ALL THE CUSTOM FUNCTONS 
 #########################################
 
 # Automatically execute all functions starting with "install_"
