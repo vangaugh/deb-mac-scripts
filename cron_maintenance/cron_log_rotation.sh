@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# UPDATED MAY 15, 2024 (TODAY)
+# ROTATE CRON LOGS
 
 # Define variables
 log_file="/var/log/system_maintenance.log"
