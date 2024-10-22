@@ -34,7 +34,7 @@ HOME=/home/$USER
 
 # RUN SCRIPT AS ROOT
 if [[ $EUID -ne 0 ]]; then
-  echo "This script must be run as root" 
+  echo "This script must be run as root"
   exit 1
 fi
 
@@ -43,13 +43,13 @@ cd /tmp
 
 # UPDATE
 printf "\n${BLUE}========================Installing Updating========================${ENDCOLOR}\n"
-nala -y update
+nala update
 printf "\n${GREEN}========================Updated successfully!========================${ENDCOLOR}\n"
 
 # UPDATE
 printf "\n${BLUE}===========================Upgrading===========================${ENDCOLOR}\n"
-nala -y upgrade && 
-nala autoremove -y
+nala upgrade &&
+  nala autoremove -y
 printf "\n${GREEN}==========================Upgraded successfully!===========================${ENDCOLOR}\n"
 
 # INSTALL STANDARD CORE PACKAGES
@@ -81,7 +81,7 @@ essentials=(
 
 printf "\n${BLUE}========================Installing standard package $1========================${ENDCOLOR}\n"
 for key in "${essentials[@]}"; do
-  echo $key | xargs nala install --no-install-recommends -y -q
+  echo $key | xargs nala install --no-install-recommends -y
 done
 printf "\n${BLUE}===============Standard packages are installed successfully=============== ${ENDCOLOR}\n"
 
@@ -108,10 +108,10 @@ print_installation_message_success() {
 # CLEANUP
 clean-up() {
   printf "\n${YELLOW}======================== Cleaning up installs autopurgeing ========================${ENDCOLOR}\n"
-  sudo nala -f install &&
-    sudo nala -y autoremove &&
-    sudo nala -y autopurge &&
-    sudo apt -y clean &&
+  sudo nala install --fix-broken -y &&
+    sudo nala autoremove -y &&
+    sudo nala autopurge -y &&
+    sudo nala clean -y &&
     rm -rf .zshrc.pre-oh-my-zsh .zshrc.BAK .bash_history .bash_logout .bashrc
 }
 
@@ -133,7 +133,7 @@ install_sysinfo() {
 # INSTALL OPENSSH SERVER:
 install_ssh() {
   print_installation_message SSH
-  nala install openssh-server -y -q
+  nala install openssh-server -y
   update-rc.d -f ssh remove
   update-rc.d -f ssh defaults
 
@@ -169,25 +169,24 @@ install_ssh() {
 # INSTALL git
 install_git() {
   print_installation_message GIT
-  nala -y install git
+  nala install git -y
   print_installation_message_success GIT
 }
 
 # INSTALL docker
 install_docker() {
   print_installation_message Docker
-  nala install \
-    apt-transport-https \
+  nala install apt-transport-https \
     ca-certificates \
     curl \
     gnupg \
-    lsb-release
+    lsb-release -y
   curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
   echo \
     "deb [arch=arm64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
       $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list >/dev/null
   nala update
-  nala -y install docker-ce docker-ce-cli containerd.io
+  nala install docker-ce docker-ce-cli containerd.io -y
   groupadd docker
   usermod -aG docker $USER
   print_installation_message_success Docker
@@ -256,15 +255,15 @@ install_powerlevel10k() {
   cd $HOME
   chmod +x ~/scripts/*.sh
   chmod +x ~/scripts/cron_maintenance/*.sh
-  chown -R $USER:$USER .;
+  chown -R $USER:$USER .
 
   print_installation_message_success powerlevel10k
 }
 
 # INSTALL Python & Pip
 install_python3() {
-  nala install python3 python3-full python3-venv -y -q
-  nala install python3-dev python3-pip -y -q
+  nala install python3 python3-full python3-venv -y
+  nala install python3-dev python3-pip -y
 
   print_installation_message_success python3
 }
@@ -272,7 +271,7 @@ install_python3() {
 # INSTALL colorls
 install_colorls() {
   print_installation_message colorls
-  nala install ruby ruby-dev -y -q
+  nala install ruby ruby-dev -y
   gem install colorls
   print_installation_message_success colorls
 }
@@ -293,7 +292,7 @@ install_FiraCodeNF() {
 }
 
 #########################################
-# EXECUTE ALL THE CUSTOM FUNCTONS 
+# EXECUTE ALL THE CUSTOM FUNCTONS
 #########################################
 
 # Automatically execute all functions starting with "install_"
