@@ -33,8 +33,8 @@ HOME=/home/$USER
 
 # RUN SCRIPT AS ROOT
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 
-   exit 1
+  echo "This script must be run as root" 
+  exit 1
 fi
 
 # GO TO TEMP FOLDER
@@ -112,6 +112,7 @@ clean-up() {
     sudo nala -y autopurge &&
     sudo apt -y clean &&
     rm -rf .zshrc.pre-oh-my-zsh .zshrc.BAK .bash_history .bash_logout .bashrc
+}
 
 # DOCUMENT THE HOST IMFORMATION
 install_sysinfo() {
@@ -123,7 +124,7 @@ install_sysinfo() {
   echo "CPU information: $(lscpu | grep 'Model name')"
   echo "Memory information: $(free -h | awk '/Mem/{print $2}')"
   echo "Disk information: $(lsblk | grep disk)"
-  echo
+  echo ""
   print_installation_message_success sysinfo
 
 }
@@ -186,11 +187,11 @@ install_docker() {
       $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list >/dev/null
   nala update
   nala -y install docker-ce docker-ce-cli containerd.io
-  docker run hello-world
   groupadd docker
   usermod -aG docker $USER
   print_installation_message_success Docker
 
+  # INSTALL docker-compose
   print_installation_message docker-compose
   curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   chmod +x /usr/local/bin/docker-compose
@@ -204,8 +205,6 @@ install_portainer() {
   print_installation_message Portainer
   docker volume create portainer_data
   docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:2.21.3
-  echo "Please goto https://10.211.55.26:9443 to access Portainer"
-
   print_installation_message_success Portainer
 }
 
@@ -229,7 +228,7 @@ install_powerlevel10k() {
   git clone https://github.com/RobertDeRose/virtualenv-autodetect.git "${ZSH_CUSTOM}"/plugins/virtualenv-autodetect
 
   # BACKUP .zshrc file
-  mkdir -p $HOME/scripts
+  mkdir -p $HOME/scripts/cron_maintenance
   mv ~/.zshrc ~/.zshrc.BAK
 
   # PULL .deb_zshrc
@@ -255,6 +254,7 @@ install_powerlevel10k() {
 
   cd $HOME
   chmod +x ~/scripts/*.sh
+  chmod +x ~/scripts/cron_maintenance/*.sh
   chown -R $USER:$USER .;
 
   print_installation_message_success powerlevel10k
@@ -319,7 +319,3 @@ if [[ $answer =~ ^[Yy]$ ]]; then
   reboot
 fi
 printf ${ENDCOLOR}
-
-cat <<EOL
-
-EOL
