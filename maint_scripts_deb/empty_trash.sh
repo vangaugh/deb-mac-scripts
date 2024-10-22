@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # SCRIPT STARTS HERE
-echo "TAKING OUT THE GARBAGE"
+echo "...TAKING OUT THE GARBAGE"
 
 find ~/.local/share/Trash/files ~/.local/share/Trash/info -type f -print0 | xargs -0 -I{} /usr/bin/scrub -Sfp random {}
 
