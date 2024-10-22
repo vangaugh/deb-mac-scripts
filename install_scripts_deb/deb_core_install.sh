@@ -25,6 +25,7 @@ set -x
 RED="\e[31m"
 GREEN="\e[32m"
 BLUE="\e[34m"
+YELLOW="\e[35m"
 ENDCOLOR="\e[0m"
 
 # INPUT SCRIPT VAIABLES
@@ -43,13 +44,13 @@ cd /tmp
 # UPDATE
 printf "\n${BLUE}========================Installing Updating========================${ENDCOLOR}\n"
 nala -y update
-printf "${GREEN}========================Updated successfully!========================${ENDCOLOR}\n"
+printf "\n${GREEN}========================Updated successfully!========================${ENDCOLOR}\n"
 
 # UPDATE
 printf "\n${BLUE}===========================Upgrading===========================${ENDCOLOR}\n"
 nala -y upgrade && 
 nala autoremove -y
-printf "${GREEN}==========================Upgraded successfully!===========================${ENDCOLOR}\n"
+printf "\n${GREEN}==========================Upgraded successfully!===========================${ENDCOLOR}\n"
 
 # INSTALL STANDARD CORE PACKAGES
 declare -A essential
@@ -100,13 +101,13 @@ print_installation_message() {
 
 # INSTALLATION MESSAGE SUCCESS
 print_installation_message_success() {
-  printf "${GREEN}========================$1 is installed successfully!========================${ENDCOLOR}\n"
+  printf "\n${GREEN}========================$1 is installed successfully!========================${ENDCOLOR}\n"
   go_temp
 }
 
 # CLEANUP
 clean-up() {
-  print_installation_message clean-up
+  printf "\n${YELLOW}======================== Cleaning up installs autopurgeing ========================${ENDCOLOR}\n"
   sudo nala -f install &&
     sudo nala -y autoremove &&
     sudo nala -y autopurge &&
@@ -312,6 +313,9 @@ printf "${ENDCOLOR}\n"
 cat <<EOL
 
 EOL
+
+# Clean-up Repos
+clean-up
 
 printf ${RED}
 read -p "Are you going to reboot this machine for stability? (y/n): " -n 1 answer
