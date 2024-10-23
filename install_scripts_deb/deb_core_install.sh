@@ -117,7 +117,6 @@ clean-up() {
     sudo nala autoremove -y &&
     sudo nala autopurge -y &&
     sudo nala clean &&
-    rm -rf .zshrc.pre-oh-my-zsh .zshrc.BAK .bash_history .bash_logout .bashrc
 }
 
 # DOCUMENT THE HOST IMFORMATION
@@ -316,7 +315,8 @@ cat <<EOL
 EOL
 
 # Clean-up Repos
-clean-up
+clean-up &&
+rm -rf .zshrc.pre-oh-my-zsh .zshrc.BAK .bash_history .bash_logout .bashrc
 
 #printf ${RED}
 read -p "Would you like to reboot the system? (y/n): " -n 1 answer
