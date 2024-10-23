@@ -14,12 +14,12 @@
 DEBIAN_FRONTEND=noninteractive
 
 # LOGGING
-exec > >(tee -ia core-install-post.log)
-exec 2> >(tee -ia core-install-post.log >&2)
-exec 19>core-install-post.log
+#exec > >(tee -ia core-install-post.log)
+#exec 2> >(tee -ia core-install-post.log >&2)
+#exec 19>core-install-post.log
 
-export BASH_XTRACEFD="19"
-set -x
+#export BASH_XTRACEFD="19"
+#set -x
 
 # SET COLOR
 RED="\e[31m"
