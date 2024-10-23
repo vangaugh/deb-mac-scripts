@@ -13,14 +13,6 @@
 # DISABLE USER PROMPT
 DEBIAN_FRONTEND=noninteractive
 
-# LOGGING
-#exec > >(tee -ia core-install-post.log)
-#exec 2> >(tee -ia core-install-post.log >&2)
-#exec 19>core-install-post.log
-
-#export BASH_XTRACEFD="19"
-#set -x
-
 # SET COLOR
 RED="\e[31m"
 GREEN="\e[32m"
@@ -42,15 +34,15 @@ fi
 cd /tmp
 
 # UPDATE
-#printf "\n${BLUE}========================Installing Updating========================${ENDCOLOR}\n"
+printf "\n${BLUE}========================Installing Updating========================${ENDCOLOR}\n"
 nala update
-#printf "\n${GREEN}========================Updated successfully!========================${ENDCOLOR}\n"
+printf "\n${GREEN}========================Updated successfully!========================${ENDCOLOR}\n"
 
 # UPDATE
-#printf "\n${BLUE}===========================Upgrading===========================${ENDCOLOR}\n"
+printf "\n${BLUE}===========================Upgrading===========================${ENDCOLOR}\n"
 nala upgrade &&
   nala autoremove -y
-#printf "\n${GREEN}==========================Upgraded successfully!===========================${ENDCOLOR}\n"
+printf "\n${GREEN}==========================Upgraded successfully!===========================${ENDCOLOR}\n"
 
 # INSTALL STANDARD CORE PACKAGES
 declare -A essential
@@ -79,11 +71,11 @@ essentials=(
   zsh
 )
 
-#printf "\n${BLUE}========================Installing standard package $1========================${ENDCOLOR}\n"
+printf "\n${BLUE}========================Installing standard package $1========================${ENDCOLOR}\n"
 for key in "${essentials[@]}"; do
   echo $key | xargs nala install --no-install-recommends -y
 done
-#printf "\n${BLUE}===============Standard packages are installed successfully=============== ${ENDCOLOR}\n"
+printf "\n${BLUE}===============Standard packages are installed successfully=============== ${ENDCOLOR}\n"
 
 #########################################
 # FUNCTIONS FOR EASY SCRIPTING
@@ -112,7 +104,7 @@ print_installation_message_success() {
 
 # CLEANUP
 clean-up() {
-  #printf "\n${YELLOW}======================== Cleaning up installs autopurgeing ========================${ENDCOLOR}\n"
+  printf "\n${YELLOW}======================== Cleaning up installs autopurgeing ========================${ENDCOLOR}\n"
   sudo nala install --fix-broken -y &&
     sudo nala autoremove -y &&
     sudo nala autopurge -y &&
@@ -121,7 +113,7 @@ clean-up() {
 
 # DOCUMENT THE HOST IMFORMATION
 install_sysinfo() {
-  #print_installation_message sysinfo
+  print_installation_message sysinfo
   echo "1: Documenting host information"
   echo "Hostname: $(hostname)"
   echo "Kernel version: $(uname -r)"
@@ -130,13 +122,13 @@ install_sysinfo() {
   echo "Memory information: $(free -h | awk '/Mem/{print $2}')"
   echo "Disk information: $(lsblk | grep disk)"
   echo ""
-  #print_installation_message_success sysinfo
+  print_installation_message_success sysinfo
 
 }
 
 # INSTALL OPENSSH SERVER:
 install_ssh() {
-  #print_installation_message SSH
+  print_installation_message SSH
   nala install openssh-server -y
   update-rc.d -f ssh remove
   update-rc.d -f ssh defaults
@@ -156,10 +148,10 @@ install_ssh() {
   touch $HOME/.ssh/authorized_keys
   chown -R $USER:$USER $HOME/.ssh
   
-  #print_installation_message_success SSH
+  print_installation_message_success SSH
 
   # SSH BASIC SETTINGS
-  #print_installation_message SSH Basic Settings
+  print_installation_message SSH Basic Settings
   echo "Disabling root login over SSH..."
   sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
   #echo "Disabling password authentication over SSH..."
@@ -169,19 +161,19 @@ install_ssh() {
   echo "Reloading the SSH service..."
   systemctl reload sshd
   echo ""
-  #print_installation_message_success SSH Basic Settings
+  print_installation_message_success SSH Basic Settings
 }
 
 # INSTALL git
 install_git() {
-  #print_installation_message GIT
+  print_installation_message GIT
   nala install git -y
-  #print_installation_message_success GIT
+  print_installation_message_success GIT
 }
 
 # INSTALL docker
 install_docker() {
-  #print_installation_message Docker
+  print_installation_message Docker
   curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
   echo \
     "deb [arch=arm64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
@@ -190,39 +182,39 @@ install_docker() {
   nala install docker-ce docker-ce-cli containerd.io -y
   groupadd docker
   usermod -aG docker $USER
-  #print_installation_message_success Docker
+  print_installation_message_success Docker
 
   # INSTALL docker-compose
- # print_installation_message docker-compose
+ print_installation_message docker-compose
   curl -L "https://github.com/docker/compose/releases/download/2.29.7/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   chmod +x /usr/local/bin/docker-compose
   ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
   docker-compose --version
-  #print_installation_message_success docker-compose
+  print_installation_message_success docker-compose
 }
 
 # INSTALL portainer
 install_portainer() {
-  #print_installation_message Portainer
+  print_installation_message Portainer
   docker volume create portainer_data
   docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:2.21.3
-  #print_installation_message_success Portainer
+  print_installation_message_success Portainer
 }
 
 # INSTALL oh-my-zsh
 install_ohmyzsh() {
-  #print_installation_message ohmyzsh
+  print_installation_message ohmyzsh
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
   cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
   chsh -s $(which zsh) $USER
   ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
   export ZSH_CUSTOM
-  #print_installation_message_success ohmyzsh
+  print_installation_message_success ohmyzsh
 }
 
 # INSTALL Powerlevel10k Theme & PULL ZSH CONFIGURATION
 install_powerlevel10k() {
-  #print_installation_message powerlevel10k
+  print_installation_message powerlevel10k
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM}"/themes/powerlevel10k
   git clone https://github.com/zsh-users/zsh-autosuggestions.git "${ZSH_CUSTOM}"/plugins/zsh-autosuggestions
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM}"/plugins/zsh-syntax-highlighting
@@ -257,29 +249,29 @@ install_powerlevel10k() {
   chmod +x ~/scripts/*.sh
   chown -R $USER:$USER .;
 
-  #print_installation_message_success powerlevel10k
+  print_installation_message_success powerlevel10k
 }
 
 # INSTALL Python & Pip
 install_python3() {
-  #print_installation_message python3
+  print_installation_message python3
   nala install python3 python3-full python3-venv -y
   nala install python3-dev python3-pip -y
 
- # print_installation_message_success python3
+ print_installation_message_success python3
 }
 
 # INSTALL colorls
 install_colorls() {
- # print_installation_message colorls
+ print_installation_message colorls
   nala install ruby ruby-dev -y
   gem install colorls
- # print_installation_message_success colorls
+ print_installation_message_success colorls
 }
 
 # INSTALL FiraCodeNF Fonts
 install_FiraCodeNF() {
- #print_installation_message FiraCodeNF
+ print_installation_message FiraCodeNF
   rm -rf /usr/local/share/fonts/FiraCodeNF
   mkdir -p /usr/local/share/fonts/FiraCodeNF
   cd /usr/local/share/fonts/FiraCodeNF
@@ -289,7 +281,7 @@ install_FiraCodeNF() {
   cd /usr/local/share/fonts/
   fc-cache -f
   go_temp
-  #print_installation_message_success FiraCodeNF
+  print_installation_message_success FiraCodeNF
 }
 
 #########################################
@@ -301,14 +293,14 @@ for func in $(declare -F | awk '{print $3}' | grep "^install_"); do
   $func
 done
 
-#printf "\n${GREEN}"
+printf "\n${GREEN}"
 
 cat <<EOL
 ===========================================================================
 Congratulations, everything you wanted to install is installed!
 ===========================================================================
 EOL
-#printf "${ENDCOLOR}\n"
+printf "${ENDCOLOR}\n"
 
 cat <<EOL
 
@@ -318,9 +310,9 @@ EOL
 clean-up &&
 rm -rf ~/.{zshrc.pre-oh-my-zsh,zshrc.BAK,bash_history,bash_logout,bashrc}
 
-#printf ${RED}
+printf ${RED}
 read -p "Would you like to reboot the system? (y/n): " -n 1 answer
 if [[ $answer =~ ^[Yy]$ ]]; then
   reboot_now
 fi
-#printf ${ENDCOLOR}
+printf ${ENDCOLOR}
