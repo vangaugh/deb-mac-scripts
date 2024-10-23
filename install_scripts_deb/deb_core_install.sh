@@ -116,7 +116,7 @@ clean-up() {
   sudo nala install --fix-broken -y &&
     sudo nala autoremove -y &&
     sudo nala autopurge -y &&
-    sudo nala clean -y &&
+    sudo nala clean &&
     rm -rf .zshrc.pre-oh-my-zsh .zshrc.BAK .bash_history .bash_logout .bashrc
 }
 
