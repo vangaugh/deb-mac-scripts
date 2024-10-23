@@ -130,7 +130,7 @@ install_sysinfo() {
   echo "Memory information: $(free -h | awk '/Mem/{print $2}')"
   echo "Disk information: $(lsblk | grep disk)"
   echo ""
-  print_installation_message_success sysinfo
+  #print_installation_message_success sysinfo
 
 }
 
