@@ -316,7 +316,7 @@ EOL
 
 # Clean-up Repos
 clean-up &&
-rm -rf .zshrc.pre-oh-my-zsh .zshrc.BAK .bash_history .bash_logout .bashrc
+rm -rf ~/.{zshrc.pre-oh-my-zsh,zshrc.BAK,bash_history,bash_logout,bashrc}
 
 #printf ${RED}
 read -p "Would you like to reboot the system? (y/n): " -n 1 answer
