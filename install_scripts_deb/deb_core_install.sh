@@ -71,12 +71,12 @@ essentials=(
   net-tools
   software-properties-common
   systemd-sysv
+  tar
   tree
   unzip
   wget
   zip
   zsh
-
 )
 
 printf "\n${BLUE}========================Installing standard package $1========================${ENDCOLOR}\n"
@@ -92,6 +92,11 @@ printf "\n${BLUE}===============Standard packages are installed successfully====
 # GOTO TEMP FOLDER
 go_temp() {
   cd /tmp
+}
+
+# REBOOT MACHING
+reboot_now() { 
+    sudo shutdown -r now
 }
 
 # INSTALLATION MESSAGE
@@ -118,7 +123,7 @@ clean-up() {
 # DOCUMENT THE HOST IMFORMATION
 install_sysinfo() {
   print_installation_message sysinfo
-  echo -e "\e[33mStep 1: Documenting host information\e[0m"
+  echo "1: Documenting host information"
   echo "Hostname: $(hostname)"
   echo "Kernel version: $(uname -r)"
   echo "Distribution: $(lsb_release -d | cut -f2)"
@@ -151,9 +156,11 @@ install_ssh() {
   mkdir -p $HOME/.ssh
   touch $HOME/.ssh/authorized_keys
   chown -R $USER:$USER $HOME/.ssh
+  
+  print_installation_message_success SSH
 
   # SSH BASIC SETTINGS
-  echo -e "\e[33mStep 20: Remote access and SSH basic settings\e[0m"
+  print_installation_message SSH Basic Settings
   echo "Disabling root login over SSH..."
   sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
   #echo "Disabling password authentication over SSH..."
@@ -163,7 +170,7 @@ install_ssh() {
   echo "Reloading the SSH service..."
   systemctl reload sshd
   echo ""
-  print_installation_message_success SSH
+  print_installation_message_success SSH Basic Settings
 }
 
 # INSTALL git
@@ -176,11 +183,6 @@ install_git() {
 # INSTALL docker
 install_docker() {
   print_installation_message Docker
-  nala install apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg \
-    lsb-release -y
   curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
   echo \
     "deb [arch=arm64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
@@ -193,7 +195,7 @@ install_docker() {
 
   # INSTALL docker-compose
   print_installation_message docker-compose
-  curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  curl -L "https://github.com/docker/compose/releases/download/2.29.7/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   chmod +x /usr/local/bin/docker-compose
   ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
   docker-compose --version
@@ -213,7 +215,7 @@ install_ohmyzsh() {
   print_installation_message ohmyzsh
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
   cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
-  chsh -s $(which zsh) ro0t3d
+  chsh -s $(which zsh) $USER
   ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
   export ZSH_CUSTOM
   print_installation_message_success ohmyzsh
@@ -254,14 +256,14 @@ install_powerlevel10k() {
 
   cd $HOME
   chmod +x ~/scripts/*.sh
-  chmod +x ~/scripts/cron_maintenance/*.sh
-  chown -R $USER:$USER .
+  chown -R $USER:$USER .;
 
   print_installation_message_success powerlevel10k
 }
 
 # INSTALL Python & Pip
 install_python3() {
+  print_installation_message python3
   nala install python3 python3-full python3-venv -y
   nala install python3-dev python3-pip -y
 
@@ -317,8 +319,8 @@ EOL
 clean-up
 
 printf ${RED}
-read -p "Are you going to reboot this machine for stability? (y/n): " -n 1 answer
+read -p "Would you like to reboot the system? (y/n): " -n 1 answer
 if [[ $answer =~ ^[Yy]$ ]]; then
-  reboot
+  reboot_now
 fi
 printf ${ENDCOLOR}
