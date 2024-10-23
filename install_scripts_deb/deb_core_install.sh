@@ -116,7 +116,7 @@ clean-up() {
   sudo nala install --fix-broken -y &&
     sudo nala autoremove -y &&
     sudo nala autopurge -y &&
-    sudo nala clean &&
+    sudo nala clean
 }
 
 # DOCUMENT THE HOST IMFORMATION
