@@ -32,7 +32,6 @@ echo "--------------------------------------------------------------------------
 sudo nala clean && 
 sudo nala update &&
 sudo nala upgrade -y &&
-sudo nala full-upgrade -y && 
 sudo nala autoremove -y && 
 sudo nala autopurge -y
 echo ""
