@@ -33,6 +33,9 @@ fi
 # GO TO TEMP FOLDER
 cd /tmp
 
+# INSTALL NALA PACKAGE MANAGER
+apt install nala -y
+
 # UPDATE
 printf "\n${BLUE}========================Installing Updating========================${ENDCOLOR}\n"
 nala update
@@ -59,7 +62,6 @@ essentials=(
   lsb-release
   module-assistant
   nano
-  nala
   net-tools
   software-properties-common
   systemd-sysv
