@@ -77,16 +77,6 @@ printf "\n${CYAN}=============== ESSENTIAL PACKAGES INSTALLED $1 ===============
 # FUNCTIONS FOR EASY SCRIPTING
 #########################################
 
-# GOTO TEMP FOLDER
-go_temp() {
-  cd /tmp
-}
-
-# REBOOT MACHINE
-reboot_now() { 
-    sudo shutdown -r now
-}
-
 # INSTALLATION MESSAGE
 print_installation_message() {
   printf "\n${BLUE}=============================== INSTALLING $1 ==============================${ENDCOLOR}\n"
@@ -121,6 +111,16 @@ print_nala_cleanup_message() {
 # NALA CLEANUP/FIX MESSAGE
 print_nala_cleanup_message_success() {
   printf "\n${PINK}=============================== $1 SUCCESSULLY CLEANED UP THE SYSTEM! ==============================${ENDCOLOR}\n"
+}
+
+# GOTO TEMP FOLDER
+go_temp() {
+  cd /tmp
+}
+
+# REBOOT MACHINE
+reboot_now() { 
+    sudo shutdown -r now
 }
 
 # NALA UPDATE
