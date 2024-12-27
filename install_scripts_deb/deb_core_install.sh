@@ -67,14 +67,17 @@ essentials=(
   zsh
 )
 
-printf "\n${CYAN}======================== INSTALLING ESSENTIAL PACKAGE $1 ========================${ENDCOLOR}\n"
+printf "\n${PURPLE}======================== INSTALLING ESSENTIAL PACKAGE $1 ========================${ENDCOLOR}\n"
 for key in "${essentials[@]}"; do
   echo $key | xargs nala install --no-install-recommends -y
 done
-printf "\n${CYAN}=============== ESSENTIAL PACKAGES INSTALLED $1 =============== ${ENDCOLOR}\n"
+printf "\n${GREEN}=============== ESSENTIAL PACKAGES INSTALLED $1 =============== ${ENDCOLOR}\n"
 
 #########################################
 # FUNCTIONS FOR EASY SCRIPTING
+#########################################
+
+# MESSAGES TO USER DURING SETUPS
 #########################################
 
 # INSTALLATION MESSAGE
@@ -82,36 +85,39 @@ print_installation_message() {
   printf "\n${BLUE}=============================== INSTALLING $1 ==============================${ENDCOLOR}\n"
 }
 
-# NALA FULL UPDATE MESSAGE
-print_nala_update_message() {
-  printf "\n${YELLOW}=============================== $1 IS UPDATING! ==============================${ENDCOLOR}\n"
-}
-
-# NALA UPGRADE MESSAGE
-print_nala_upgrade_message() {
-  printf "\n${YELLOW}=============================== $1 IS UPGRADING! ==============================${ENDCOLOR}\n"
-}
-
-# NALA UPDATE/UPGRADE COMPLETED SUCCESSFULLY MESSAGE
-print_nala_update_success() {
-  printf "\n${GREEN}=============================== $1 IS DONE UPDATING/UPRADING! ==============================${ENDCOLOR}\n"
-}
-
-# INSTALLATION MESSAGE SUCCESS
+# INSTALLATION MESSAGE - COMPLETED SUCCESSFULLY
 print_installation_message_success() {
   printf "\n${GREEN}======================== $1 INSTALLED SUCCESSFULLY! ========================${ENDCOLOR}\n"
   go_temp
 }
 
-# NALA CLEANUP/FIX MESSAGE
-print_nala_cleanup_message() {
-  printf "\n${PINK}=============================== $1 IS CLEANING UP SYSTEM! ==============================${ENDCOLOR}\n"
+# NALA FULL UPDATE MESSAGE
+print_nala_update_message() {
+  printf "\n${YELLOW}=============================== $1 IS UPDATING! ==============================${ENDCOLOR}\n"
+}
+
+# NALA FULL UPGRADE MESSAGE
+print_nala_upgrade_message() {
+  printf "\n${YELLOW}=============================== $1 IS UPGRADING! ==============================${ENDCOLOR}\n"
+}
+
+# NALA FULL UPDATE/UPGRADE - COMPLETED SUCCESSFULLY 
+print_nala_update_success() {
+  printf "\n${GREEN}=============================== $1 IS DONE UPDATING/UPRADING! ==============================${ENDCOLOR}\n"
 }
 
 # NALA CLEANUP/FIX MESSAGE
-print_nala_cleanup_message_success() {
-  printf "\n${PINK}=============================== $1 SUCCESSULLY CLEANED UP THE SYSTEM! ==============================${ENDCOLOR}\n"
+print_nala_cleanup_message() {
+  printf "\n${PURPLE}=============================== $1 IS CLEANING UP SYSTEM! ==============================${ENDCOLOR}\n"
 }
+
+# NALA CLEANUP/FIX MESSAGE - COMPLETED SUCCESSFFULLY
+print_nala_cleanup_message_success() {
+  printf "\n${GREEN}=============================== $1 SUCCESSULLY CLEANED UP THE SYSTEM! ==============================${ENDCOLOR}\n"
+}
+
+# END OF MESSAGES
+#########################################
 
 # GOTO TEMP FOLDER
 go_temp() {
