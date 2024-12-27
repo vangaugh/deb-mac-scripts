@@ -16,8 +16,10 @@ DEBIAN_FRONTEND=noninteractive
 # SET COLOR
 RED="\e[31m"
 GREEN="\e[32m"
+YELLOW="\e[33m"
 BLUE="\e[34m"
-YELLOW="\e[35m"
+PURPLE="e[35m"
+CYAN="e[36m"
 ENDCOLOR="\e[0m"
 
 # INPUT SCRIPT VAIABLES
@@ -34,20 +36,12 @@ fi
 cd /tmp
 
 # INSTALL NALA PACKAGE MANAGER
-apt install nala -y
+sudo apt update &&
+sudo apt install nala -y &&
+sudo nala update -y &&
+sudo nala upgrade -y
 
-# UPDATE
-printf "\n${BLUE}========================Installing Updating========================${ENDCOLOR}\n"
-nala update
-printf "\n${GREEN}========================Updated successfully!========================${ENDCOLOR}\n"
-
-# UPDATE
-printf "\n${BLUE}===========================Upgrading===========================${ENDCOLOR}\n"
-nala upgrade &&
-  nala autoremove -y
-printf "\n${GREEN}==========================Upgraded successfully!===========================${ENDCOLOR}\n"
-
-# INSTALL STANDARD CORE PACKAGES
+# INSTALL STANDARD ESSENTIAL CORE PACKAGES
 declare -A essential
 essentials=(
   apt-transport-https
@@ -73,11 +67,11 @@ essentials=(
   zsh
 )
 
-printf "\n${BLUE}========================Installing standard package $1========================${ENDCOLOR}\n"
+printf "\n${CYAN}======================== INSTALLING ESSENTIAL PACKAGE $1 ========================${ENDCOLOR}\n"
 for key in "${essentials[@]}"; do
   echo $key | xargs nala install --no-install-recommends -y
 done
-printf "\n${BLUE}===============Standard packages are installed successfully=============== ${ENDCOLOR}\n"
+printf "\n${CYAN}=============== ESSENTIAL PACKAGES INSTALLED $1 =============== ${ENDCOLOR}\n"
 
 #########################################
 # FUNCTIONS FOR EASY SCRIPTING
@@ -88,33 +82,78 @@ go_temp() {
   cd /tmp
 }
 
-# REBOOT MACHING
+# REBOOT MACHINE
 reboot_now() { 
     sudo shutdown -r now
 }
 
 # INSTALLATION MESSAGE
 print_installation_message() {
-  printf "\n${BLUE}===============================Installing $1==============================${ENDCOLOR}\n"
+  printf "\n${BLUE}=============================== INSTALLING $1 ==============================${ENDCOLOR}\n"
+}
+
+# NALA FULL UPDATE MESSAGE
+print_nala_update_message() {
+  printf "\n${YELLOW}=============================== $1 IS UPDATING! ==============================${ENDCOLOR}\n"
+}
+
+# NALA UPGRADE MESSAGE
+print_nala_upgrade_message() {
+  printf "\n${YELLOW}=============================== $1 IS UPGRADING! ==============================${ENDCOLOR}\n"
+}
+
+# NALA UPDATE/UPGRADE COMPLETED SUCCESSFULLY MESSAGE
+print_nala_update_success() {
+  printf "\n${GREEN}=============================== $1 IS DONE UPDATING/UPRADING! ==============================${ENDCOLOR}\n"
 }
 
 # INSTALLATION MESSAGE SUCCESS
 print_installation_message_success() {
-  printf "\n${GREEN}========================$1 is installed successfully!========================${ENDCOLOR}\n"
+  printf "\n${GREEN}======================== $1 INSTALLED SUCCESSFULLY! ========================${ENDCOLOR}\n"
   go_temp
 }
 
-# CLEANUP
-clean-up() {
-  printf "\n${YELLOW}======================== Cleaning up installs autopurgeing ========================${ENDCOLOR}\n"
+# NALA CLEANUP/FIX MESSAGE
+print_nala_cleanup_message() {
+  printf "\n${PINK}=============================== $1 IS CLEANING UP SYSTEM! ==============================${ENDCOLOR}\n"
+}
+
+# NALA CLEANUP/FIX MESSAGE
+print_nala_cleanup_message_success() {
+  printf "\n${PINK}=============================== $1 SUCCESSULLY CLEANED UP THE SYSTEM! ==============================${ENDCOLOR}\n"
+}
+
+# NALA UPDATE
+nala_update() {
+  print_nala_update_message NALA
+  sudo nala clean &&
+  sudo nala update
+  
+  print_nala_update_success NALA
+}
+
+# NALA FULL UPGRADE
+nala_upgrade() {
+  print_nala_upgrade_message NALA
+  sudo nala upgrade -y &&
+  sudo nala autoremove -y
+  
+  print_nala_update_success NALA
+}
+
+# NALA CLEANUP
+nala_cleanup() {
+  print_nala_cleanup_message NALA
   sudo nala install --fix-broken -y &&
     sudo nala autoremove -y &&
     sudo nala autopurge -y &&
     sudo nala clean
+  
+  print_nala_cleanup_message_success NALA
 }
 
 # DOCUMENT THE HOST IMFORMATION
-install_sysinfo() {
+sysinfo() {
   print_installation_message sysinfo
   echo "1: Documenting host information"
   echo "Hostname: $(hostname)"
@@ -124,9 +163,13 @@ install_sysinfo() {
   echo "Memory information: $(free -h | awk '/Mem/{print $2}')"
   echo "Disk information: $(lsblk | grep disk)"
   echo ""
+  
   print_installation_message_success sysinfo
-
 }
+
+#########################################
+# INSTALLTION FUNCTIONS START
+#########################################
 
 # INSTALL OPENSSH SERVER:
 install_ssh() {
@@ -223,7 +266,6 @@ install_powerlevel10k() {
   git clone https://github.com/RobertDeRose/virtualenv-autodetect.git "${ZSH_CUSTOM}"/plugins/virtualenv-autodetect
 
   # BACKUP .zshrc file
-  mkdir -p $HOME/scripts/cron_maintenance
   mv ~/.zshrc ~/.zshrc.BAK
 
   # PULL .deb_zshrc
@@ -259,7 +301,6 @@ install_python3() {
   print_installation_message python3
   nala install python3 python3-full python3-venv -y
   nala install python3-dev python3-pip -y
-
  print_installation_message_success python3
 }
 
@@ -286,6 +327,9 @@ install_FiraCodeNF() {
   print_installation_message_success FiraCodeNF
 }
 
+# END OF INSTALLATION FUNCTIONS LIST
+#########################################
+
 #########################################
 # EXECUTE ALL THE CUSTOM FUNCTONS
 #########################################
@@ -299,7 +343,7 @@ printf "\n${GREEN}"
 
 cat <<EOL
 ===========================================================================
-Congratulations, everything you wanted to install is installed!
+ALL INSTALLATIONS COMPLETE
 ===========================================================================
 EOL
 printf "${ENDCOLOR}\n"
@@ -308,13 +352,22 @@ cat <<EOL
 
 EOL
 
-# Clean-up Repos
-clean-up &&
+#########################################
+# CLEANUP SYSTEM
+#########################################
+install_nala_cleanup &&
 rm -rf ~/.{zshrc.pre-oh-my-zsh,zshrc.BAK,bash_history,bash_logout,bashrc}
 
+#########################################
+# SYSTEM REBOOT FOR CHANGES TO TAKE EECT
+#########################################
 printf ${RED}
 read -p "Would you like to reboot the system? (y/n): " -n 1 answer
 if [[ $answer =~ ^[Yy]$ ]]; then
   reboot_now
 fi
 printf ${ENDCOLOR}
+
+#########################################
+# END OF SCRIPT
+#########################################
