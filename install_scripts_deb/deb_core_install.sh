@@ -41,7 +41,7 @@ sudo apt install nala -y &&
 sudo nala update -y &&
 sudo nala upgrade -y
 
-# INSTALL STANDARD ESSENTIAL CORE PACKAGES
+# LIST OF STANDARD ESSENTIAL CORE PACKAGES
 declare -A essential
 essentials=(
   apt-transport-https
@@ -54,11 +54,11 @@ essentials=(
   gnupg
   htop
   lsb-release
-  module-assistant
   nano
   net-tools
   software-properties-common
   systemd-sysv
+  sudo
   tar
   tree
   unzip
@@ -126,7 +126,7 @@ go_temp() {
 
 # REBOOT MACHINE
 reboot_now() { 
-    sudo shutdown -r now
+  shutdown -r now
 }
 
 # NALA UPDATE
@@ -296,6 +296,7 @@ install_powerlevel10k() {
   wget -q -O - https://raw.githubusercontent.com/vangaugh/deb-mac-scripts/main/maint_scripts_deb/git_pull_all.sh >~/scripts/git_pull_all.sh
 
   cd $HOME
+  mkdir ~/scripts
   chmod +x ~/scripts/*.sh
   chown -R $USER:$USER .;
 
@@ -361,7 +362,7 @@ EOL
 #########################################
 # CLEANUP SYSTEM
 #########################################
-install_nala_cleanup &&
+nala_cleanup &&
 rm -rf ~/.{zshrc.pre-oh-my-zsh,zshrc.BAK,bash_history,bash_logout,bashrc}
 
 #########################################
