@@ -37,6 +37,7 @@ alias mysqlrs="/etc/init.d/mariadb restart"
 
 # IP ADDRESS SHORTCUT
 alias getip="curl http://ipecho.net/plain; echo"
+alias localip="ip -c -br -f inet address"
 
 # UPDATE NPM
 alias npmup="npm update -g && npm install npm@latest -g"
